@@ -3,10 +3,82 @@ title: "geonewb_python"
 jupyter: python3
 ---
 
-This is a Quarto website.
+## What is this module all about?
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+This is an introduction to the world of geospatial analysis using Python. Since you
+are in this class, you already have a good working knowledge of using Python for
+data analytics work. I'm sure you all have a basic familiarity with maps through
+using things like Google Maps, actual paper maps and a globe. We'll learn
+the basic geospatial concepts needed such as coordinate reference systems and
+the various types of data used in this realm.
 
-```{python}
-1 + 1
-```
+## Acknowledgements
+
+I have adapted the materials from the [Introduction to Geospatial Raster and Vector Data with Python](https://carpentries-incubator.github.io/geospatial-python/) course, which is part of
+the [Carpentries Incubator](https://carpentries-incubator.org/). The Carpentries Incubator is a hub for people creating open access course materials using
+the templates and other resources provided by [The Carpentries](https://carpentries.org/). The goal of The Carpentries is:
+
+> We teach foundational coding and data science skills to researchers worldwide.
+
+I have used materials from [Software Carpentry](https://software-carpentry.org/lessons/) in my [Practical Computing for Data Analytics](http://www.sba.oakland.edu/faculty/isken/courses/pcda/) course.
+
+All of the materials I'm using are licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Similarly, all
+of my materials in this module use the same [CC-BY 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.
+
+My original plan was to use the templates from The Carpentries for this module as they are based on using R Markdown. However,
+recently, they lost funding that led to layoffs and it doesn't look like there are resoures for continued development of the [Carpentries Workbench](https://carpentries.github.io/workbench/). With the advent of Quarto, I was hoping that the Carpentries templates would evolve to support it, but that doesn't seem to be in the cards. So, I'm using some of their content and ideas, but am developing this module using Quarto.
+
+## Module structure
+
+There are a series of sections, or chapters, which cover a range of topics.
+Within each section, there will also be a Jupyter notebook that you will
+work through to get hands-on practice with each topic. The series of notebooks are
+based on an overarching case study involving analysis of land use on the
+Oakland University campus.
+
+Here's an overview of the topics we'll cover in this module.
+
+* Introduction to Raster Data
+  - what is it and what is it used to represent?
+  - main Python libraries for working with raster data
+  - basic plotting of raster data
+  - Case Study: reading, exploring, plotting a raster file representing land use on the OU campus
+
+* Introduction to Vector Data
+  - what is it and what is it used to represent?
+  - main Python libraries for working with vector data
+  - basic plotting of vector data
+  - Case Study: reading, exploring, plotting a vector file representing various features on the OU campus such as buildings and rivers
+
+* Coordinate Reference Systems
+  - this is a big, important, and complex topic
+  - how do we represent something like location on our planet, that is inherently 3D, on a 2D surface such as a computer screen or a piece of paper? We use something called a projected coordinate reference system (CRS).
+  - we will learn enough to be able to work effectively with data from different coordinate reference systems.
+  - Case Study: reproject data from one CRS to another
+
+* The GIS Landscape
+  - it's a big landscape
+  - software options
+
+* Accessing Satellite Imagery
+  - use MS Planetary Computer to find and download satellite imagery
+  - Case Study: Download and Landsat and Sentinel-2 images of OU campus
+
+* Working with Raster Data in Python
+  - using rioxarray and xarray packages to read, explore, and visualize raster data
+  - introduction to GDAL for converting between file formats (img -> tif), MORE STUFF
+  - common raster operations such as cropping, dealing with no data values, reprojecting and resampling
+  - raster computations such as NVDI
+  - Case Study: analyze land use patterns over time on OU campus
+
+* Working with Vector Data in Python
+  - more use of GeoPandas for vector data manipulation
+  - Case Study: overlaying rivers on OU campus raster
+
+* Raster Math with Python
+  - raster computations such as NVDI
+  - hillshade
+  - Case Study: analyze land use patterns over time on OU campus
+
+* Making Maps
+  - using Cartopy to make a map combining vector and raster data
