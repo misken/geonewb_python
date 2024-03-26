@@ -1,13 +1,22 @@
 ---
 title: "Introduction to Vector Data"
+jupyter: quarto_eogeo_310
 ---
 
+```{r}
+options(reticulate.conda_binary = "/home/mark/anaconda3/bin/conda")
+library(reticulate)
+#use_condaenv("quarto_eogeo_310", conda = "/home/mark/anaconda3/bin/conda")
+use_condaenv("quarto_eogeo_310")
+```
+
 ## Intro and Objectives
+
 
 Now we'll look at the second main type of data - vector data.
 
 - Describe the strengths and weaknesses of storing data in vector format.
-- Describe the three types of vectors and identify types of data that would be stored in each.
+- Describe the different types of vectors and identify types of data that would be stored in each.
 
 ## Readings and Resources
 
@@ -66,14 +75,14 @@ a point. There are no line features shown.
 
 Vector data has some important advantages:
 
-* The geometry itself contains information about what the dataset creator thought was important
+* The geometry itself contains information about what the dataset creator thought was important.
 * The geometry structures hold information in themselves - why choose point over polygon, for instance?
 * Each geometry feature can carry multiple attributes instead of just one, e.g. a database of cities can have attributes for name, country, population, etc
-* Data storage can be very efficient compared to rasters
+* Data storage can be very efficient compared to rasters. For example, a polygon of a large area can be represented with a small number of vertices as compared to all the raster grid elements making up the polygon.
 
 The downsides of vector data include:
 
-* Potential loss of detail compared to raster
+* Potential loss of detail compared to raster.
 * Potential bias in datasets - what didn't get recorded?
 * Calculations involving multiple vector layers need to do math on the
   geometry as well as the attributes, so can be slow compared to raster math.
@@ -81,7 +90,7 @@ The downsides of vector data include:
 Vector datasets are in use in many industries besides geospatial fields. For
 instance, computer graphics are largely vector-based, although the data
 structures in use tend to join points using arcs and complex curves rather than
-straight lines. Computer-aided design (CAD) is also vector- based. The
+straight lines. Computer-aided design (CAD) is also vector-based. The
 difference is that geospatial datasets are accompanied by information tying
 their features to real-world locations.
 
@@ -90,7 +99,7 @@ their features to real-world locations.
 https://en.wikipedia.org/wiki/GIS_file_format
 
 Like raster data, vector data can also come in many different formats. For this
-module, we will use the Shapefile format. This is an extremely common (an old) format
+module, we will start with the Shapefile format. This is an extremely common (and old) format
 developed by [ESRI](https://www.esri.com/en-us/home) the company behind the most popular commercial GIS package, ArcGIS.
 
 A Shapefile format consists of multiple
@@ -117,13 +126,14 @@ individual shapefile can only contain one vector type (all points, all lines
 or all polygons). You will not find a mixture of point, line and polygon
 objects in a single shapefile.
 
+Later in this module we'll look at GeoJSON files, another format for storing vector data.
+
 :::callout
 ## More Resources on Shapefiles
 
 More about shapefiles can be found on
 [Wikipedia.](https://en.wikipedia.org/wiki/Shapefile) Shapefiles are often publicly
-available from government services, such as [this page from the US Census Bureau][us-cb] or
-[this one from Australia's Data.gov.au website](https://data.gov.au/data/dataset?res_format=SHP).
+available from government services, such as [this page from the US Census Bureau][us-cb].
 :::
 
 ## Integrated raster and vector data formats
@@ -146,4 +156,78 @@ ADD INFO ON GEOPACKAGES AND MAYBE GEODATABASES
 - Vector data structures represent specific features on the Earth's surface along with attributes of those features.
 - Vector objects are either points, lines, or polygons.
 :::
+
+## [GeoPandas](https://geopandas.org/en/stable/) - add geospatial functionality to pandas
+
+The basic idea is to combine the capabilites of pandas with the shapely library to allow you to work with geospatial data in a pandas-like way.
+
+> GeoPandas is an open source project to make working with geospatial data in python easier. GeoPandas extends the datatypes used by pandas to allow spatial operations on geometric types. Geometric operations are performed by [shapely](https://shapely.readthedocs.io/en/stable/index.html). GeoPandas further depends on [fiona](https://fiona.readthedocs.io/en/stable/) for file access and matplotlib for plotting.
+
+Let's use GeoPandas to read a shapefile. The US government provides Cartographic Boundary Files in both geodatabase and shapefile formats. They are available at different levels of resolution and also by geographic region.
+
+> The cartographic boundary files are simplified representations of selected geographic areas from the Census Bureau’s Master Address File/Topologically Integrated Geographic Encoding and Referencing (MAF/TIGER) System. These boundary files are specifically designed for small scale thematic mapping. As of 2019, cartographic boundary files are available in shapefile, geodatabase, and Keyhole Markup Language (KML) format. For more details about these files, including their appropriate usage, please see our [Cartographic Boundary File Description](https://www.census.gov/programs-surveys/geography/technical-documentation/naming-convention/cartographic-boundary-file.html) page.
+
+From the link above, I downloaded a zipped shapefile (**cb_2022_26_place_500k.zip**) for the Places in the state of Michigan. As we'll see, these are things like city and township boundaries. After uncompressing it, the resulting folder looks like this:
+
+```
+├── cb_2022_26_place_500k
+│   ├── cb_2022_26_place_500k.cpg
+│   ├── cb_2022_26_place_500k.dbf
+│   ├── cb_2022_26_place_500k.prj
+│   ├── cb_2022_26_place_500k.shp
+│   ├── cb_2022_26_place_500k.shp.ea.iso.xml
+│   ├── cb_2022_26_place_500k.shp.iso.xml
+│   └── cb_2022_26_place_500k.shx
+└── cb_2022_26_place_500k.zip
+
+1 directory, 8 files
+```
+
+Now let's open the shapefile with GeoPandas. First we need to load GeoPandas.
+
+
+```{python}
+import geopandas as gpd
+from pathlib import Path
+```
+
+To read a shapefile, we can use the GeoPandas `read_file()` function and pass in the name of the file with the `.shp` extension.
+
+```{python}
+mi_places_file = Path('data', 'cb_2022_26_place_500k', 'cb_2022_26_place_500k.shp')
+mi_places_gdf = gpd.read_file(mi_places_file)
+
+mi_places_gdf.info()
+```
+
+The resulting data structure is called a `GeoDataFrame`. In addition to standard `DataFrame` fields, a `GeoDataFrame` has one or more `geometry` fields. Only one `geometry` field is considered active at any one time.
+As you might guess, this field will allow us to do spatial queries with pandas-like commands as well as plot the data.
+
+Let's see what's in the `geometry` field.
+
+```{python}
+mi_places_gdf[['NAME', 'geometry']].head(15)
+```
+
+As each row is a "place" in Michigan, it's not surprising to find `POLYGON` objects in the `geometry` field. You'll explore this `GeoDataFrame` further in the land use analysis notebook below.
+
+## Case Study: Land use analysis on the OU campus
+
+Throughout this module, we will use this case study to allow you to get some
+hands on practice with the topics covered. For this this module, you'll
+be working through a Jupyter notebook that introduces the very basics of working
+with vector data in Shapefile format. 
+
+### Activities
+
+Start by downloading the following file and extract it in a location of your choice.
+
+Launch Jupyter lab and open the **ou_land_use_02_vectorintro.ipynb** file. Work your
+way through out. 
+
+- Download: [ou_land_use_02_vectorintro.zip]()
+
+There is a single screencast that goes along with this section:
+
+- Screencast: [Intro to vector data and land use on the OU campus]()
 

@@ -2,3 +2,9 @@
 title: "Dev notes"
 ---
 
+This weired regex error seems to be at root of the problem in getting reticulate to 
+use the specified conda env. https://github.com/rstudio/reticulate/issues/1535
+
+```{r}
+py_discover_config()
+```
