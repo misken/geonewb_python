@@ -1,6 +1,8 @@
 ---
-title: "Introduction to Coordinate Reference Systems"
+jupyter: python3
 ---
+
+# Introduction to Coordinate Reference Systems
 
 ## Intro and Objectives
 

@@ -6,5 +6,75 @@ This weired regex error seems to be at root of the problem in getting reticulate
 use the specified conda env. https://github.com/rstudio/reticulate/issues/1535
 
 ```{r}
-py_discover_config()
+# py_discover_config()
 ```
+
+## Learning from geocompy
+
+https://py.geocompx.org/preface
+
+The book is written with qmd files. 
+There is a `convert.sh` file that converts the chapters in qmd format to ipynb
+and .py format using quarto.
+
+### Style conventions
+
+Package names are bold.
+Folder and filenames are like code.
+
+### Building the book
+
+#### Packages needed to build the book
+
+numpy
+pandas
+matplotlib
+jupyter
+jupyterlab
+ipykernel
+
+rioxarray
+geopandas
+shapely
+cartopy
+pystac
+planetary_computer
+
+osmnx
+rasterstats
+contextily
+
+
+
+## Packages needed by a user of the notebooks
+
+Figure out all main packages needed and creation environment.yml file. Create
+the conda virtual env and test as I write module.
+
+numpy
+pandas
+matplotlib
+ipykernel
+
+rioxarray
+geopandas
+shapely
+cartopy
+pystac
+planetary_computer
+
+osmnx
+rasterstats
+contextily
+
+## Chapters
+
+### Introduction to Raster Data
+
+### Introduction to Vector Data
+
+### Introduction to CRS
+
+### GIS Landscape
+
+### Introduction to working with satellite imagery

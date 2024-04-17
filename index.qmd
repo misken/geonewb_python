@@ -1,7 +1,9 @@
 ---
-title: "geonewb_python"
 jupyter: python3
 ---
+
+# An brief introduction to Python for gecomputation
+
 
 ## What is this module all about?
 

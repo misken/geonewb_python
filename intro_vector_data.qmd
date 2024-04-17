@@ -1,14 +1,14 @@
 ---
-title: "Introduction to Vector Data"
-jupyter: quarto_eogeo_310
+jupyter: python3
 ---
 
 ```{r}
-options(reticulate.conda_binary = "/home/mark/anaconda3/bin/conda")
-library(reticulate)
+#library(reticulate)
+#options(reticulate.conda_binary = "/home/mark/anaconda3/bin/conda")
 #use_condaenv("quarto_eogeo_310", conda = "/home/mark/anaconda3/bin/conda")
-use_condaenv("quarto_eogeo_310")
+#use_condaenv("quarto_eogeo_310")
 ```
+# "Introduction to Vector Data"
 
 ## Intro and Objectives
 
@@ -17,6 +17,7 @@ Now we'll look at the second main type of data - vector data.
 
 - Describe the strengths and weaknesses of storing data in vector format.
 - Describe the different types of vectors and identify types of data that would be stored in each.
+- Use GeoPandas to read and work with a vector data file in Shapefile format.
 
 ## Readings and Resources
 
@@ -66,12 +67,14 @@ are represented by which vector type.
 
 :::
 
-::::callout
+::: {.callout-tip collapse="true"}
 ## Solution
 
 State boundaries are polygons. The Fisher Tower location is
 a point. There are no line features shown.
-::::
+:::
+
+
 
 Vector data has some important advantages:
 
@@ -162,6 +165,15 @@ ADD INFO ON GEOPACKAGES AND MAYBE GEODATABASES
 The basic idea is to combine the capabilites of pandas with the shapely library to allow you to work with geospatial data in a pandas-like way.
 
 > GeoPandas is an open source project to make working with geospatial data in python easier. GeoPandas extends the datatypes used by pandas to allow spatial operations on geometric types. Geometric operations are performed by [shapely](https://shapely.readthedocs.io/en/stable/index.html). GeoPandas further depends on [fiona](https://fiona.readthedocs.io/en/stable/) for file access and matplotlib for plotting.
+
+![](images/E07/pandas_geopandas_relation.png){alt="Pandas and Geopandas"}
+
+GeoPandas extends the popular `pandas` library for data analysis to geospatial applications. The main `pandas` objects (the `Series` and the `DataFrame`) are expanded to GeoPandas objects (`GeoSeries` and `GeoDataFrame`). This extension is implemented by including geometric types, represented in Python using the shapely library, and by providing dedicated methods for spatial operations (union, intersection, etc.). The relationship between `Series`, `DataFrame`, `GeoSeries` and `GeoDataFrame` can be briefly explained as follow:
+
+ - A `Series` is a one-dimensional array with axis, holding any data type (integers, strings, floating-point numbers, Python objects, etc.)
+ - A `DataFrame` is a two-dimensional labeled data structure with columns of potentially different types1.
+ - A `GeoSeries` is a `Series` object designed to store shapely geometry objects.
+ - A `GeoDataFrame` is an extened `pandas.DataFrame`, which has a column with geometry objects, and this column is a `GeoSeries`.
 
 Let's use GeoPandas to read a shapefile. The US government provides Cartographic Boundary Files in both geodatabase and shapefile formats. They are available at different levels of resolution and also by geographic region.
 

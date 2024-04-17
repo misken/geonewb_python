@@ -1,25 +1,28 @@
 ---
-title: "Access satellite imagery using Python"
+jupyter: python3
 ---
+
+# Access satellite imagery using Python
+
 
 ## Intro and Objectives
 
-A number of satellites take snapshots of the Earth's surface from space. The images recorded by these remote sensors
-represent a very precious data source for any activity that involves monitoring changes on Earth. Satellite imagery is
-typically provided in the form of geospatial raster data, with the measurements in each grid cell ("pixel") being
-associated to accurate geographic coordinate information.
+A number of satellites take snapshots of the Earth's surface from space. The images recorded by these remote sensors represent a very precious data source for any activity that involves monitoring changes on Earth. Satellite imagery is typically provided in the form of geospatial raster data, with the measurements in each grid cell ("pixel") being linked with accurate geographic coordinate information.
 
 In this episode we will explore how to access open satellite data using Python. In particular,  we will
-consider [the Sentinel-2 data collection that is hosted on AWS](https://registry.opendata.aws/sentinel-2-l2a-cogs).
+consider [the Sentinel-2 data collection that is hosted on the Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a).
 This dataset consists of multi-band optical images acquired by the two satellites of
-[the Sentinel-2 mission](https://sentinel.esa.int/web/sentinel/missions/sentinel-2) and it is continuously updated with
-new images.
+[the Sentinel-2 mission](https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2) and it is continuously updated with new images. After reading about the Sentinel-2 mission, you might have a number of questions:
 
-- Where can I find open-access satellite data?
-- How do I search for satellite imagery with the STAC API?
-- How do I fetch remote raster datasets using Python?
+- How do we do basic things like find images (geoTIFF) files and save the image itself to disk?
+- What are these STAC repositories?
+- What exactly is in this imaging data? There are numerous bands with different types of data and at different resolution levels (size in meters of each cell width).
+- How do we read this imaging data into data structures amenable to further analysis?
+- What kinds of analysis can we do with this data?
+- What existing resources are available for newbies to Sentinel image data analysis?
 
 
+In this section we learn to do the following:
 
 - Search public STAC repositories of satellite imagery using Python.
 - Inspect search result's metadata.
@@ -27,92 +30,66 @@ new images.
 - Open satellite imagery as raster data and save it to disk.
 
 
+## Overview of the Planetary Computer
 
+Microsoft's, pretty new, [Planetary Computer](https://planetarycomputer.microsoft.com/docs/overview/about) is quite an ambitious project. It has several major components:
 
-## Introduction
+- [Data Catalog](https://planetarycomputer.microsoft.com/catalog) - It is a ginormous repository of well cataloged data all about Earth's various systems and includes a web based interface that allows users to find relevant data - for free. The repository is based on an open standard known as STAC.
+- [API](https://planetarycomputer.microsoft.com/docs/quickstarts/reading-stac/) - It has an API that leverages open source tools to make it easy to do data searches by time and location. Focuses on Python.
+- [Hub](https://planetarycomputer.microsoft.com/docs/overview/environment/) - A managed compute environment for doing cloud based geospatial analysis at scale. For this part you need to apply for access.
+- [Applications](https://planetarycomputer.microsoft.com/applications) - An ecosystem of people doing meaningful work with the Planetary Computer.
 
+There is a Mapscaping podcast featuring two of the main developers of the Planetary Computer - see [https://mapscaping.com/podcast/the-planetary-computer/](https://mapscaping.com/podcast/the-planetary-computer/). The [Mapscaping.com](https://mapscaping.com/) site is a great place to learn about geospatial analysis through its terrific podcasts. For example:
 
+- The Planetary Computer - [https://mapscaping.com/podcast/the-planetary-computer/](https://mapscaping.com/podcast/the-planetary-computer/)
+- Introducing Google Earth Engine - [https://mapscaping.com/podcast/introducing-google-earth-engine/](https://mapscaping.com/podcast/introducing-google-earth-engine/)
+- Sentinel Hub - [https://mapscaping.com/podcast/sentinel-hub/](https://mapscaping.com/podcast/sentinel-hub/)
+
+We'll mostly be using the Planetary Computer to search for and acquire satellite image data from the Sentinel-2 and Landsat catalogs. We can use the [PySTAC](https://pystac.readthedocs.io/en/stable/) package to do this freely and without any authentication. As mentioned above, authentication is required to use the Hub computing cluster.
 
 ## Search for satellite imagery
 
 ### The SpatioTemporal Asset Catalog (STAC) specification
 
-Current sensor resolutions and satellite revisit periods are such that terabytes of data products are added daily to the
-corresponding collections. Such datasets cannot be made accessible to users via full-catalog download. Space agencies
-and other data providers often offer access to their data catalogs through interactive Graphical User Interfaces (GUIs),
-see for instance the [Copernicus Open Access Hub portal](https://scihub.copernicus.eu/dhus/#/home) for the Sentinel
+Current sensor resolutions and satellite revisit periods are such that terabytes of data products are added daily to the corresponding collections. Such datasets cannot be made accessible to users via full-catalog download. Space agencies
+and other data providers often offer access to their data catalogs through interactive portals such as the [Copernicus Open Access Hub portal](https://scihub.copernicus.eu/dhus/#/home) for the Sentinel
 missions. Accessing data via a GUI is a nice way to explore a catalog and get familiar with its content, but it
 represents a heavy and error-prone task that should be avoided if carried out systematically to retrieve data.
 
-A service that offers programmatic access to the data enables users to reach the desired data in a more reliable,
+A service that offers programmatic access to the data enables users to access the desired data in a more reliable,
 scalable and reproducible manner. An important element in the software interface exposed to the users, which is generally called
 the Application Programming Interface (API), is the use of standards. Standards, in fact, can significantly facilitate
 the reusability of tools and scripts across datasets and applications.
 
-The SpatioTemporal Asset Catalog (STAC) specification is an emerging standard for describing geospatial data. By
+The [SpatioTemporal Asset Catalog (STAC) specification](https://stacspec.org/en) is an emerging standard for describing geospatial data. By
 organizing metadata in a form that adheres to the STAC specifications, data providers make it possible for users to
 access data from different missions, instruments and collections using the same set of tools.
 
-![Views of the STAC browser](fig/E05/STAC-browser.jpg){alt="STAC browser screenshots"}
-
-:::callout
-## More Resources on STAC
-- [STAC specification](https://github.com/radiantearth/stac-spec#readme)
-- [Tools based on STAC](https://stacindex.org/ecosystem)
-- [STAC catalogs](https://stacindex.org/catalogs)
-:::
 
 ## Search a STAC catalog
 
-The [STAC browser](https://radiantearth.github.io/stac-browser/#/) is a good starting point to discover available
-datasets, as it provides an up-to-date list of existing STAC catalogs. From the list, let's click on the
-"Earth Search" catalog, i.e. the access point to search the archive of Sentinel-2 images hosted on AWS.
+There are general STAC browsers such as the one at [Radiant Earth](https://radiantearth.github.io/stac-browser/#/). It is good starting point to discover available
+datasets, as it provides an up-to-date list of existing STAC catalogs. However, we are going to use the STAC browsing tools available through the Planetary Computer.
 
 :::challenge
 ## Exercise: Discover a STAC catalog
-Let's take a moment to explore the Earth Search STAC catalog, which is the catalog indexing the Sentinel-2 collection
-that is hosted on AWS. We can interactively browse this catalog using the STAC browser at [this link](https://radiantearth.github.io/stac-browser/#/external/earth-search.aws.element84.com/v1).
+Let's take a moment to explore the Planetary Computer STAC catalog, which contains a large number of datasets spanning numerous areas such as air quality, climate, biodiversity, imagery, fires, weather, land use and more. Start by going to the main [Data Catalog](https://planetarycomputer.microsoft.com/catalog) page. Spend some time browsing the various categories to see the breadth of data that is available. Then go to the [Sentinel-2 Level-2A](https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a) page. Click the big blue button on the right labelled View in Explorer. You can navigate around somewhat like you do with Google Earth or Maps. Find the OU campus. As you scroll around on the map, the list of image tiles will continually update along the left side of the screen. Notice that the default is the most recent images with low cloud cover at the top. 
 
-1. Open the link in your web browser. Which (sub-)catalogs are available?
-2. Open the Sentinel-2 Level 2A collection, and select one item from the list. Each item corresponds to a satellite
-"scene", i.e. a portion of the footage recorded by the satellite at a given time. Have a look at the metadata fields
-and the list of assets. What kind of data do the assets represent?
+Pick one of the images from the list on the left. If you click, the Show on Map icon in the lower right corner of the image preview, you'll see the satellite image superimposed on the map. If you click the squiggly bracket icon just to the left of the Show on Map icon, you'll get a window with a Python code snippet for accessing the *assets* of this map. We'll learn more about this shortly.
+
+![Views of the STAC browser](images/E05/ou_image_on_map.png){alt="STAC browser screenshots"}
+
+Scroll down through the image properties on the left. What CRS is this image using?
+
 
 ::::solution
+The EPSG code is 32627. This is associated with the CRS WGS 84 / UTM zone 17N.
+See [https://epsg.io/?q=32617](https://epsg.io/?q=32617).
 
-![Views of the Earth Search STAC endpoint](fig/E05/STAC-browser-exercise.jpg){alt="earth-search stac catalog views"}
-
-1. 7 subcatalogs are available, including a catalog for Landsat Collection 2, Level-2 and Sentinel-2 Level 2A (see left screenshot in the figure above).
-2. When you select the Sentinel-2 Level 2A collection, and randomly choose one of the items from the list, you
-should find yourself on a page similar to the right screenshot in the figure above. On the left side you will find
-a list of the available assets: overview images (thumbnail and true color images), metadata files and the "real"
-satellite images, one for each band captured by the Multispectral Instrument on board Sentinel-2.
 ::::
 :::
 
-When opening a catalog with the STAC browser, you can access the API URL by clicking on the "Source" button on the top
-right of the page. By using this URL, we have access to the catalog content and, if supported by the catalog, to the
-functionality of searching its items. For the Earth Search STAC catalog the API URL is:
 
-```python
-api_url = "https://earth-search.aws.element84.com/v1"
-```
-
-You can query a STAC API endpoint from Python using the `pystac_client` library:
-
-```python
-from pystac_client import Client
-
-client = Client.open(api_url)
-```
-
-In the following, we ask for scenes belonging to the `sentinel-2-l2a` collection. This dataset includes Sentinel-2
-data products pre-processed at level 2A (bottom-of-atmosphere reflectance) and saved in Cloud Optimized GeoTIFF (COG)
-format:
-
-```python
-collection = "sentinel-2-l2a"  # Sentinel-2, Level 2A, Cloud Optimized GeoTiffs (COGs)
-```
 
 :::callout
 ## Cloud Optimized GeoTIFFs

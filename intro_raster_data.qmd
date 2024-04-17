@@ -1,6 +1,8 @@
 ---
-title: "Introduction to Raster Data"
+jupyter: python3
 ---
+
+# Introduction to Raster Data
 
 ## Intro and Objectives
 
@@ -13,6 +15,7 @@ There are two primary data types that we will learn about for storing geospatial
 ## Readings and Resources
 
 - PyGIS - [Ch 1: Spatial Data](https://pygis.io/docs/c_features.html#) and [Ch 1: Spatial Raster Data in Python](https://pygis.io/docs/c_rasters.html)
+- GCwP - [Ch 2: Geographic Data in Python](https://py.geocompx.org/01-spatial-data)
 - GCwR - [Ch 2: Geographic Data in R](https://r.geocompx.org/spatial-class)
 - [GIS Stack Exchange](https://gis.stackexchange.com/) is like StackOverflow for geospatial questions. Very helpful.
 
@@ -225,7 +228,7 @@ The two main data structures are `DataArray` (a N-d generalization of a `pandas.
 
 ### [rioxarray](https://corteva.github.io/rioxarray/html/readme.html) - read raster data into xarray objects
 
-The rioxarray package extends the xarray package to facilitate reading raster data into xarray objects. The actual reading of the raster file is done using another Python package known as [rasterio](https://rasterio.readthedocs.io/en/latest/). From the rasterio docs:
+The rioxarray package extends the xarray package to facilitate reading raster data into xarray objects. The actual reading of the raster file is done using another Python package known as [rasterio](https://rasterio.readthedocs.io/en/latest/). Once you load rioxarray, your can use the `rio` accessor with xarray objects to access rioxarray methods for working with raster data. From the rasterio docs:
 
 > Geographic information systems use GeoTIFF and other formats to organize and store gridded raster datasets such as satellite imagery and terrain models. Rasterio reads and writes these formats and provides a Python API based on Numpy N-dimensional arrays and GeoJSON.
 
