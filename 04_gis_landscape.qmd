@@ -1,8 +1,11 @@
 ---
-title: "The GIS Landscape"
+jupyter: python3
 ---
 
-## Intro and Objectives
+# The GIS Landscape
+
+In this section you will get an overview of the GIS software landscape. After this, you should 
+be able to:
 
 - Describe the difference between various approaches to geospatial computing, and their relative strengths and weaknesses.
 - Name some commonly used GIS applications.
@@ -90,7 +93,7 @@ Private companies have released SDK platforms for large scale GIS analysis:
 
 Publicly funded open-source platforms for large scale GIS analysis:
 
- * [PANGEO](https://pangeo.io/) for the Earth Sciences. This community organization also supports python libraries like xarray, iris, dask, jupyter, and many other packages.
+ * [PANGEO](https://pangeo.io/) for the Earth Sciences. This community organization also supports python libraries like **xarray**, **iris**, **dask**, **jupyter**, and many other packages.
  * [Sepal.io](https://sepal.io/) by [FAO Open Foris](https://www.openforis.org/) utilizing EOS satellite imagery and cloud resources for global forest monitoring.
 
 ## GUI vs CLI
@@ -137,15 +140,12 @@ also have interface packages for GDAL, and for specific GIS apps.
 This last point is a huge advantage for GIS-by-programming; these interface packages
 give you the ability to access functions unique to particular programs, but have your
 entire workflow recorded in a central document - a document that can be re-run at will.
-Below are lists of some of the key spatial packages for Python, which we will be using in the
-remainder of this workshop.
+Below are lists of some of the key spatial packages for Python.
 
   * `geopandas` and `geocube` for working with vector data
   * `rasterio` and `rioxarray` for working with raster data
 
 These packages along with the `matplotlib` package are all we need for spatial data visualisation. Python also has many fundamental scientific packages that are relevant in the geospatial domain. Below is a list of particularly fundamental packages. `numpy`, `scipy`, and `scikit-image` are all excellent options for working with rasters, as arrays.
-
-An overview of these and other Python spatial packages can be [accessed here](https://medium.com/@chrieke/essential-geospatial-python-libraries-5d82fcc38731).
 
 As a programming language, Python can be a CLI tool. However, using
 Python together with an [Integrated Development Environment](https://www.codecademy.com/articles/what-is-an-ide) (IDE) application
@@ -167,7 +167,7 @@ There are a variety of file types that are used in GIS analysis. Depending on th
 types can be used while others are not readable. Below is a brief table describing some of the most common vector and
 raster file types.
 
-https://en.wikipedia.org/wiki/GIS_file_format
+See [https://en.wikipedia.org/wiki/GIS_file_format](https://en.wikipedia.org/wiki/GIS_file_format) for more about GIS file formats.
 
 ### Vector
 
