@@ -2,16 +2,7 @@
 jupyter: python3
 ---
 
-```{r}
-#library(reticulate)
-#options(reticulate.conda_binary = "/home/mark/anaconda3/bin/conda")
-#use_condaenv("quarto_eogeo_310", conda = "/home/mark/anaconda3/bin/conda")
-#use_condaenv("quarto_eogeo_310")
-```
-# "Introduction to Vector Data"
-
-## Intro and Objectives
-
+# Introduction to Vector Data
 
 Now we'll look at the second main type of data - vector data.
 
@@ -21,8 +12,8 @@ Now we'll look at the second main type of data - vector data.
 
 ## Readings and Resources
 
-- PyGIS - [Ch 1: Spatial Data](https://pygis.io/docs/c_features.html#)
-- GCwR - [Ch 2: Geographic Data in R](https://r.geocompx.org/spatial-class)
+- GCwP - [Ch 1: Geographic Data in Python - Section 1.2](https://py.geocompx.org/01-spatial-data#sec-vector-data)
+- GCwR - [Ch 2: Geographic Data in R - Section 2.2](https://r.geocompx.org/spatial-class#vector-data)
 
 ## About Vector Data
 
@@ -47,7 +38,7 @@ vertex that has a defined x, y location.
 closed. The outlines of survey plot boundaries, lakes, oceans, and states or
 countries are often represented by polygons.
 
-::: {.callout-tip}
+::: {.callout-note}
 ## Data Tip
 
 Sometimes, boundary layers such as states and countries, are stored as lines
@@ -55,8 +46,8 @@ rather than polygons. However, these boundaries, when represented as a line,
 will not create a closed object with a defined area that can be filled.
 :::
 
-:::callout
-## Challenge - Identify Vector Types
+::: {.callout-tip}
+### Challenge - Identify Vector Types
 
 The plot below includes examples of two of the three types of vector
 objects. Use the definitions above to identify which features
@@ -68,7 +59,7 @@ are represented by which vector type.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution
+### Solution
 
 State boundaries are polygons. The Fisher Tower location is
 a point. There are no line features shown.
@@ -99,7 +90,6 @@ their features to real-world locations.
 
 ## Vector Data Format for this Module
 
-https://en.wikipedia.org/wiki/GIS_file_format
 
 Like raster data, vector data can also come in many different formats. For this
 module, we will start with the Shapefile format. This is an extremely common (and old) format
@@ -150,8 +140,8 @@ format standards are easier to define and maintain, and so is metadata. The
 effects of particular data manipulations are more predictable if you are
 confident that all of your input data has the same characteristics.
 
-ADD INFO ON GEOPACKAGES AND MAYBE GEODATABASES
-
+There are integrated file formats that do allow you to mix separate vector and raster files
+within the same container file. These include [GeoPackage](https://www.geopackage.org/) (which is a SQLite database) and [Geodatabase](https://pro.arcgis.com/en/pro-app/latest/help/data/geodatabases/overview/what-is-a-geodatabase-.htm) formats.
 
 [us-cb]: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 
@@ -162,20 +152,20 @@ ADD INFO ON GEOPACKAGES AND MAYBE GEODATABASES
 
 ## [GeoPandas](https://geopandas.org/en/stable/) - add geospatial functionality to pandas
 
-The basic idea is to combine the capabilites of pandas with the shapely library to allow you to work with geospatial data in a pandas-like way.
+The basic idea is to combine the capabilities of pandas with the **shapely** library to allow you to work with geospatial data in a **pandas**-like way.
 
 > GeoPandas is an open source project to make working with geospatial data in python easier. GeoPandas extends the datatypes used by pandas to allow spatial operations on geometric types. Geometric operations are performed by [shapely](https://shapely.readthedocs.io/en/stable/index.html). GeoPandas further depends on [fiona](https://fiona.readthedocs.io/en/stable/) for file access and matplotlib for plotting.
 
 ![](images/E07/pandas_geopandas_relation.png){alt="Pandas and Geopandas"}
 
-GeoPandas extends the popular `pandas` library for data analysis to geospatial applications. The main `pandas` objects (the `Series` and the `DataFrame`) are expanded to GeoPandas objects (`GeoSeries` and `GeoDataFrame`). This extension is implemented by including geometric types, represented in Python using the shapely library, and by providing dedicated methods for spatial operations (union, intersection, etc.). The relationship between `Series`, `DataFrame`, `GeoSeries` and `GeoDataFrame` can be briefly explained as follow:
+GeoPandas extends the popular **pandas** library for data analysis to geospatial applications. The main `pandas` objects (the `Series` and the `DataFrame`) are expanded to **GeoPandas** objects (`GeoSeries` and `GeoDataFrame`). This extension is implemented by including geometric types, represented in Python using the **shapely** library, and by providing dedicated methods for spatial operations (union, intersection, etc.). The relationship between `Series`, `DataFrame`, `GeoSeries` and `GeoDataFrame` can be briefly explained as follow:
 
  - A `Series` is a one-dimensional array with axis, holding any data type (integers, strings, floating-point numbers, Python objects, etc.)
  - A `DataFrame` is a two-dimensional labeled data structure with columns of potentially different types1.
  - A `GeoSeries` is a `Series` object designed to store shapely geometry objects.
- - A `GeoDataFrame` is an extened `pandas.DataFrame`, which has a column with geometry objects, and this column is a `GeoSeries`.
+ - A `GeoDataFrame` is an extended `pandas.DataFrame`, which has a column with geometry objects, and this column is a `GeoSeries`.
 
-Let's use GeoPandas to read a shapefile. The US government provides Cartographic Boundary Files in both geodatabase and shapefile formats. They are available at different levels of resolution and also by geographic region.
+Let's use **geopandas** to read a shapefile. The US government provides Cartographic Boundary Files in both geodatabase and shapefile formats. They are available at different levels of resolution and also by geographic region.
 
 > The cartographic boundary files are simplified representations of selected geographic areas from the Census Bureau’s Master Address File/Topologically Integrated Geographic Encoding and Referencing (MAF/TIGER) System. These boundary files are specifically designed for small scale thematic mapping. As of 2019, cartographic boundary files are available in shapefile, geodatabase, and Keyhole Markup Language (KML) format. For more details about these files, including their appropriate usage, please see our [Cartographic Boundary File Description](https://www.census.gov/programs-surveys/geography/technical-documentation/naming-convention/cartographic-boundary-file.html) page.
 
@@ -195,7 +185,7 @@ From the link above, I downloaded a zipped shapefile (**cb_2022_26_place_500k.zi
 1 directory, 8 files
 ```
 
-Now let's open the shapefile with GeoPandas. First we need to load GeoPandas.
+Now let's open the shapefile with **geopandas**. 
 
 
 ```{python}
@@ -203,7 +193,7 @@ import geopandas as gpd
 from pathlib import Path
 ```
 
-To read a shapefile, we can use the GeoPandas `read_file()` function and pass in the name of the file with the `.shp` extension.
+To read a shapefile, we can use the `read_file()` function and pass in the name of the file with the `.shp` extension.
 
 ```{python}
 mi_places_file = Path('data', 'cb_2022_26_place_500k', 'cb_2022_26_place_500k.shp')
@@ -228,7 +218,7 @@ As each row is a "place" in Michigan, it's not surprising to find `POLYGON` obje
 Throughout this module, we will use this case study to allow you to get some
 hands on practice with the topics covered. For this this module, you'll
 be working through a Jupyter notebook that introduces the very basics of working
-with vector data in Shapefile format. 
+with vector data in shapefile format. 
 
 ### Activities
 

@@ -2,5 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+*.Rproj
 
 /.quarto/
+_book
+data
+*.qgz

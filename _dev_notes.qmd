@@ -24,6 +24,10 @@ Folder and filenames are like code.
 
 ### Building the book
 
+```
+conda run -n quarto_geonewb quarto preview
+```
+
 #### Packages needed to build the book
 
 numpy

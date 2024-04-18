@@ -28,7 +28,7 @@ All of the materials I'm using are licensed under [CC-BY 4.0](https://creativeco
 of my materials in this module use the same [CC-BY 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.
 
 My original plan was to use the templates from The Carpentries for this module as they are based on using R Markdown. However,
-recently, they lost funding that led to layoffs and it doesn't look like there are resoures for continued development of the [Carpentries Workbench](https://carpentries.github.io/workbench/). With the advent of Quarto, I was hoping that the Carpentries templates would evolve to support it, but that doesn't seem to be in the cards. So, I'm using some of their content and ideas, but am developing this module using Quarto.
+recently, they lost funding that led to layoffs and it doesn't look like there are resoures for continued development of the [Carpentries Workbench](https://carpentries.github.io/workbench/). With the advent of Quarto, I was hoping that the Carpentries templates would evolve to support it, but that doesn't seem to be in the cards. So, I'm using some of their content and ideas, but am developing this module using Quarto. Quarto is a computational authoring tool that is somewhat language agnostic. While Quarto is the next generation of R Markdown, it also supports Python code chunks. You can find the GitHub repo for this module at [https://github.com/misken/geonewb_python](https://github.com/misken/geonewb_python).
 
 ## Module structure
 
@@ -56,7 +56,7 @@ Here's an overview of the topics we'll cover in this module.
   - this is a big, important, and complex topic
   - how do we represent something like location on our planet, that is inherently 3D, on a 2D surface such as a computer screen or a piece of paper? We use something called a projected coordinate reference system (CRS).
   - we will learn enough to be able to work effectively with data from different coordinate reference systems.
-  - Case Study: reproject data from one CRS to another
+  - Case Study: check CRS of raster and vector data, reproject data from one CRS to another
 
 * The GIS Landscape
   - it's a big landscape
@@ -64,23 +64,27 @@ Here's an overview of the topics we'll cover in this module.
 
 * Accessing Satellite Imagery
   - use MS Planetary Computer to find and download satellite imagery
-  - Case Study: Download and Landsat and Sentinel-2 images of OU campus
+  - Case Study: Download and view Sentinel-2 images of OU campus
 
 * Working with Raster Data in Python
   - using rioxarray and xarray packages to read, explore, and visualize raster data
   - introduction to GDAL for converting between file formats (img -> tif), MORE STUFF
   - common raster operations such as cropping, dealing with no data values, reprojecting and resampling
   - raster computations such as NVDI
+  - hillshade
   - Case Study: analyze land use patterns over time on OU campus
 
 * Working with Vector Data in Python
   - more use of GeoPandas for vector data manipulation
   - Case Study: overlaying rivers on OU campus raster
 
-* Raster Math with Python
-  - raster computations such as NVDI
-  - hillshade
-  - Case Study: analyze land use patterns over time on OU campus
-
 * Making Maps
   - using Cartopy to make a map combining vector and raster data
+  
+### Software setup for the case study
+
+You should already have the Anaconda distribution of Python installed and working. Due to the
+large number of libraries needed for geospatial analysis, we are also going to create and
+use a new Conda virtual environment for this module.
+
+**TODO** Instructions for creating virtual env.

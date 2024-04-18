@@ -1,0 +1,26 @@
+project:
+  type: book
+
+book:
+  title: "A brief introduction to Python for geocomputation"
+  
+  chapters:
+      - index.qmd
+      - 01_intro_raster_data.qmd
+      - 02_intro_vector_data.qmd
+      - 03_intro_crs.qmd
+      - 04_gis_landscape.qmd
+  
+  page-navigation: true
+
+format:
+  html:
+    theme: 
+      - cosmo
+    css: styles.css
+    toc: true
+
+jupyter: python3
+
+
+

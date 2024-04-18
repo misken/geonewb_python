@@ -4,8 +4,6 @@ jupyter: python3
 
 # Introduction to Coordinate Reference Systems
 
-## Intro and Objectives
-
 In order to do geospatial analysis and to create maps, we need to make sure all of our data is using the same
 *projected coordinate reference system*. The topic of coordinate reference systems and map projections is large and can be quite complex (and fascinating). After this module you should be able to:
 
@@ -17,7 +15,7 @@ In order to do geospatial analysis and to create maps, we need to make sure all 
 
 ## Readings and Resources
 
-- PyGIS - [Ch 2: Nature of Coordinate Reference Systems](https://pygis.io/docs/d_crs_what_is_it.html) 
+- GCwP - [Ch 1: Geographic Data in Python - Section 1.4](https://py.geocompx.org/01-spatial-data#sec-coordinate-reference-systems-intro) 
 - GCwR - [Section 2.4: Coordinate Reference Systems](https://r.geocompx.org/spatial-class#crs-intro)
 - [booklet written by ESRI](http://downloads2.esri.com/support/documentation/ao_/710Understanding_Map_Projections.pdf)
 
@@ -173,21 +171,7 @@ Note that the zone is unique to the [UTM projection](https://www.usgs.gov/faqs/w
 
 ![The UTM zones across the continental United States (Chrismurf at English Wikipedia, via [Wikimedia Commons](https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system#/media/File:Utm-zones-USA.svg) (CC-BY))](images/E03/Utm-zones-USA.svg){alt="UTM zones across the CONUS"}
 
-## Challenge - Reading a PROJ4 String
 
-Here is a PROJ4 string for one of the datasets we will use in this workshop:
-
-`+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0`
-
-* What projection, zone, datum, and ellipsoid are used for this data?
-* What are the units of the data?
-* Using the map above, what part of the United States was this data collected from?
-
-## Solution
-
-* Projection is UTM, zone 18, datum is WGS84, ellipsoid is WGS84.
-* The data is in meters.
-* The data comes from the eastern US seaboard.
 
 ## Format interoperability
 
@@ -226,15 +210,13 @@ As we'll see, we usually don't have to install GDAL as it will get installed whe
 
 ### [PROJ](https://proj.org/) - transform geospatial coordinates between different coordinate reference systems
 
-If you are going to work with geospatial data, you are going to have to learn about coordinate reference systems (CRS) and map projections. The world isn't flat and it's not a perfect sphere. However, most maps are flat. Projections are a way of translating our non-flat earth to a flat representation for mapping. The CRS is a specific type of "grid system" so that numeric X-Y coordinates can be associated with any point on the map. 
-
 The PROJ library does the heavy lifting of translating between different CRS and projections. Much like GDAL, it is 
 - open source,
 - used both as a library and command line tool,
 - foundational software to geospatial analysis,
 - now maintained by OSGeo.
 
-While the underlying library is C/C++, you can use PROJ from Python via the [pyproj package](https://pyproj4.github.io/pyproj/stable/api/proj.html). Like GDAL, pyproj will get installed when we install a higher level package such as GeoPandas. However, there are [several different ways to install PROJ](https://proj.org/install.html) and early on I seem to have found one that resulted in multiple (and conflicting) PROJ installations on my Linux machine. Eventually I fixed it - more on this later.
+While the underlying library is C/C++, you can use PROJ from Python via the [pyproj package](https://pyproj4.github.io/pyproj/stable/api/proj.html). Like GDAL, **pyproj** will get installed when we install a higher level package such as GeoPandas. 
 
 ## Metadata
 
@@ -255,6 +237,14 @@ generated and maintained manually.
 * [Video](https://www.youtube.com/embed/KUF_Ckv8HbE) highlighting how map projections can make continents
 seems proportionally larger or smaller than they actually are.
 
+::: {.callout-note}
+### CRS and projections
+If you are going to work with geospatial data, you are going to have to learn about coordinate reference systems (CRS) and map projections. The world isn't flat and it's not a perfect sphere. However, most maps are flat. Projections are a way of translating our non-flat earth to a flat representation for mapping. The CRS is a specific type of "grid system" so that numeric X-Y coordinates can be associated with any point on the map.
+
+- All geospatial datasets (raster and vector) are associated with a specific coordinate reference system.
+- A coordinate reference system includes datum, projection, and additional parameters specific to the dataset.
+:::
+
 ## Case Study: Land use analysis on the OU campus
 
 For this this module, you'll
@@ -274,8 +264,5 @@ There is a single screencast that goes along with this section:
 
 - Screencast: [Intro to CRSs for land use analysis]()
 
-:::callout
-- All geospatial datasets (raster and vector) are associated with a specific coordinate reference system.
-- A coordinate reference system includes datum, projection, and additional parameters specific to the dataset.
-:::
+
 

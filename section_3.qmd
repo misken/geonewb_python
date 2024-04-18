@@ -1,4 +1,0 @@
----
-title: "Section 3"
----
-

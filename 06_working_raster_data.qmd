@@ -2,28 +2,26 @@
 jupyter: python3
 ---
 
-# Introduction to Raster Data
+# More on Working with Raster Data
 
 ## Intro and Objectives
 
-There are two primary data types that we will learn about for storing geospatial data - raster and vector data. We will start out learning about raster data. Our objective are:
+Our objective are:
 
-- Describe the difference between raster and vector data.
-- Describe the strengths and weaknesses of storing data in raster format.
-- Distinguish between continuous and categorical raster data and identify types of datasets that would be stored in each format.
+- Raster data computations
+- Working with nodata values
+- Clipping or cropping of raster data
 
 ## Readings and Resources
 
 - PyGIS - [Ch 1: Spatial Data](https://pygis.io/docs/c_features.html#) and [Ch 1: Spatial Raster Data in Python](https://pygis.io/docs/c_rasters.html)
-- GCwP - [Ch 2: Geographic Data in Python](https://py.geocompx.org/01-spatial-data)
 - GCwR - [Ch 2: Geographic Data in R](https://r.geocompx.org/spatial-class)
-- [GIS Stack Exchange](https://gis.stackexchange.com/) is like StackOverflow for geospatial questions. Very helpful.
 
-Yes, I know this class is Python based, but I'm including the second reference for a few reasons. First of all,
-it has outstanding, well written, content. Secondly, R has many strengths for geospatial analysis
-and mapping and most of you have already learned both R and Python basics in my previous course. It's good to be aware
-of the R ecosystem for geospatial as then you can pick and choose your tools as you see fit. R and Python are becoming
-more interoperable as time goes on and mixing the two is becoming quite common.
+
+
+
+
+
 
 ## Data Structures: Raster and Vector
 

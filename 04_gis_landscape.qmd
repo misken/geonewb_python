@@ -167,6 +167,8 @@ There are a variety of file types that are used in GIS analysis. Depending on th
 types can be used while others are not readable. Below is a brief table describing some of the most common vector and
 raster file types.
 
+https://en.wikipedia.org/wiki/GIS_file_format
+
 ### Vector
 
 | File Type | Extensions | Description |
