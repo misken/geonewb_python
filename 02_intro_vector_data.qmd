@@ -4,7 +4,7 @@ jupyter: python3
 
 # Introduction to Vector Data
 
-Now we'll look at the second main type of data - vector data.
+Now we'll look at the second main type of data - vector data. You will be able to:
 
 - Describe the strengths and weaknesses of storing data in vector format.
 - Describe the different types of vectors and identify types of data that would be stored in each.
@@ -71,7 +71,7 @@ Vector data has some important advantages:
 
 * The geometry itself contains information about what the dataset creator thought was important.
 * The geometry structures hold information in themselves - why choose point over polygon, for instance?
-* Each geometry feature can carry multiple attributes instead of just one, e.g. a database of cities can have attributes for name, country, population, etc
+* Each geometry feature can carry multiple attributes instead of just one, e.g. a database of cities can have attributes for name, country, population, etc.
 * Data storage can be very efficient compared to rasters. For example, a polygon of a large area can be represented with a small number of vertices as compared to all the raster grid elements making up the polygon.
 
 The downsides of vector data include:
@@ -89,7 +89,6 @@ difference is that geospatial datasets are accompanied by information tying
 their features to real-world locations.
 
 ## Vector Data Format for this Module
-
 
 Like raster data, vector data can also come in many different formats. For this
 module, we will start with the Shapefile format. This is an extremely common (and old) format
@@ -143,8 +142,6 @@ confident that all of your input data has the same characteristics.
 There are integrated file formats that do allow you to mix separate vector and raster files
 within the same container file. These include [GeoPackage](https://www.geopackage.org/) (which is a SQLite database) and [Geodatabase](https://pro.arcgis.com/en/pro-app/latest/help/data/geodatabases/overview/what-is-a-geodatabase-.htm) formats.
 
-[us-cb]: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
-
 :::callout
 - Vector data structures represent specific features on the Earth's surface along with attributes of those features.
 - Vector objects are either points, lines, or polygons.
@@ -158,7 +155,7 @@ The basic idea is to combine the capabilities of pandas with the **shapely** lib
 
 ![](images/E07/pandas_geopandas_relation.png){alt="Pandas and Geopandas"}
 
-GeoPandas extends the popular **pandas** library for data analysis to geospatial applications. The main `pandas` objects (the `Series` and the `DataFrame`) are expanded to **GeoPandas** objects (`GeoSeries` and `GeoDataFrame`). This extension is implemented by including geometric types, represented in Python using the **shapely** library, and by providing dedicated methods for spatial operations (union, intersection, etc.). The relationship between `Series`, `DataFrame`, `GeoSeries` and `GeoDataFrame` can be briefly explained as follow:
+GeoPandas extends the popular **pandas** library for data analysis to geospatial applications. The main **pandas** objects (the `Series` and the `DataFrame`) are expanded to **geopandas** objects (`GeoSeries` and `GeoDataFrame`). This extension is implemented by including geometric types, represented in Python using the **shapely** library, and by providing dedicated methods for spatial operations (union, intersection, etc.). The relationship between `Series`, `DataFrame`, `GeoSeries` and `GeoDataFrame` can be briefly explained as follow:
 
  - A `Series` is a one-dimensional array with axis, holding any data type (integers, strings, floating-point numbers, Python objects, etc.)
  - A `DataFrame` is a two-dimensional labeled data structure with columns of potentially different types1.
@@ -169,7 +166,8 @@ Let's use **geopandas** to read a shapefile. The US government provides Cartogra
 
 > The cartographic boundary files are simplified representations of selected geographic areas from the Census Bureau’s Master Address File/Topologically Integrated Geographic Encoding and Referencing (MAF/TIGER) System. These boundary files are specifically designed for small scale thematic mapping. As of 2019, cartographic boundary files are available in shapefile, geodatabase, and Keyhole Markup Language (KML) format. For more details about these files, including their appropriate usage, please see our [Cartographic Boundary File Description](https://www.census.gov/programs-surveys/geography/technical-documentation/naming-convention/cartographic-boundary-file.html) page.
 
-From the link above, I downloaded a zipped shapefile (**cb_2022_26_place_500k.zip**) for the Places in the state of Michigan. As we'll see, these are things like city and township boundaries. After uncompressing it, the resulting folder looks like this:
+
+From [this link](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html), I downloaded a zipped shapefile (**cb_2022_26_place_500k.zip**) for the Places in the state of Michigan. As we'll see, these are things like city and township boundaries. After uncompressing it, the resulting folder looks like this:
 
 ```
 ├── cb_2022_26_place_500k
@@ -213,6 +211,7 @@ mi_places_gdf[['NAME', 'geometry']].head(15)
 
 As each row is a "place" in Michigan, it's not surprising to find `POLYGON` objects in the `geometry` field. You'll explore this `GeoDataFrame` further in the land use analysis notebook below.
 
+
 ## Case Study: Land use analysis on the OU campus
 
 Throughout this module, we will use this case study to allow you to get some
@@ -232,4 +231,6 @@ way through out.
 There is a single screencast that goes along with this section:
 
 - Screencast: [Intro to vector data and land use on the OU campus]()
+
+[us-cb]: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 

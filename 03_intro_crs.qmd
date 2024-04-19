@@ -11,8 +11,6 @@ In order to do geospatial analysis and to create maps, we need to make sure all 
 - Name some common schemes for describing coordinate reference systems.
 - Interpret a PROJ4 and/or WKT coordinate reference system description.
 
-**TODO: Add info on CRS from some of my blog posts**
-
 ## Readings and Resources
 
 - GCwP - [Ch 1: Geographic Data in Python - Section 1.4](https://py.geocompx.org/01-spatial-data#sec-coordinate-reference-systems-intro) 
@@ -244,6 +242,11 @@ If you are going to work with geospatial data, you are going to have to learn ab
 - All geospatial datasets (raster and vector) are associated with a specific coordinate reference system.
 - A coordinate reference system includes datum, projection, and additional parameters specific to the dataset.
 :::
+
+A few interesting reference documents on CRS use by the USGS include:
+
+- [https://pubs.usgs.gov/pp/1395/report.pdf](https://pubs.usgs.gov/pp/1395/report.pdf)
+- [https://www.usgs.gov/publications/map-projections-used-us-geological-survey](https://www.usgs.gov/publications/map-projections-used-us-geological-survey)
 
 ## Case Study: Land use analysis on the OU campus
 

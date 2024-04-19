@@ -186,7 +186,7 @@ See [https://en.wikipedia.org/wiki/GIS_file_format](https://en.wikipedia.org/wik
 | GeoTIFF |.TIF .TIFF .OVR | The GeoTIFF has become an industry image standard file for GIS and satellite remote sensing applications. GeoTIFFs may be accompanied by other files:TFW is the world file that is required to give your raster geolocation.XML optionally accompany GeoTIFFs and are your metadata.AUX auxiliary files store projections and other information.OVR pyramid files improves performance for raster display. |
 | Cloud Optimized GeoTIFF (COG) | .TIF .TIFF | Based on the GeoTIFF standard, COGs incorporate tiling and overviews to support HTTP range requests where users can query and load subsets of the image without having to transfer the entire file. |
 
-:::callout
+::: {.callout-note}
 - Many software packages exist for working with geospatial data.
 - Command-line programs allow you to automate and reproduce your work.
 - JupyterLab provides a user-friendly interface for working with Python.

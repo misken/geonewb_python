@@ -82,3 +82,29 @@ contextily
 ### GIS Landscape
 
 ### Introduction to working with satellite imagery
+
+## Case Study: OU land use
+
+## Notes
+
+What if we did an analysis of land use on the OU campus?
+
+Could get both RGB imagery as well as computing NDVI. The Carpentries course,
+https://carpentries-incubator.github.io/geospatial-python/09-raster-calculations.html, does
+NDVI computations and then creates a classification scheme to create a discrete raster from
+the continuous NDVI raster. All quite relevant. Sections before this one do typical 
+raster and vector operations such as cropping, reprojecting and matching different layers.
+
+
+
+Could look at how things have changed over time.
+
+Would require combo of raster and vector data.
+
+- single and multi-band rasters
+- missing data in rasters
+- cropping rasters
+
+Where to get the vector data? What kind of vector data exists for the OU campus?
+
+How to do the land use analysis?
