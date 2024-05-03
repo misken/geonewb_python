@@ -6,6 +6,10 @@ jupyter: python3
 
 ## Intro and Objectives
 
+It is quite common that the raster data you have in hand is too large to process, or not all the pixels are relevant to your area of interest (AoI). In both situations, you should consider cropping your raster data before performing data analysis.
+
+In this module, we will introduce how to crop raster data into the desired area. We will use one Sentinel-2 image as the example raster data, and introduce how to crop your data to different types of AoIs.
+
 Our objective are:
 
 - Raster data computations
@@ -14,229 +18,18 @@ Our objective are:
 
 ## Readings and Resources
 
-- PyGIS - [Ch 1: Spatial Data](https://pygis.io/docs/c_features.html#) and [Ch 1: Spatial Raster Data in Python](https://pygis.io/docs/c_rasters.html)
-- GCwR - [Ch 2: Geographic Data in R](https://r.geocompx.org/spatial-class)
+- GCwP - [Section 3.3: Spatial operations on raster data](https://py.geocompx.org/03-spatial-operations#sec-spatial-ras)
+- GCwP - [Section 4.3: Geometric operations on raster data](https://py.geocompx.org/04-geometry-operations#sec-geo-ras)
 
+## Introduce the Data
 
+We will use the image file that we downloaded and saved from the last notebook. You can
+find the T17TLH_20240401T162831_TCI_10m.tif file in TODO. 
 
 
 
+We also use the cropped fields polygons `fields_cropped.shp`, which was generated in an exercise from [Episode 7: Vector data in python](07-vector-data-in-python.md).
 
-
-## Data Structures: Raster and Vector
-
-The two primary types of geospatial data are raster
-and vector data. Raster data is stored as a grid of values which are rendered on a
-map as pixels. Each pixel value represents an area on the Earth's surface. Vector data structures represent specific features on the
-Earth's surface (e.g. boundaries, bodies of water, roads, buildings, dams, parks, ...), and
-assign attributes to those features. Vector data structures
-will be discussed in more detail in [the next section](intro_vector_data.md).
-
-This module will focus on how to work with both raster and vector
-data sets, therefore it is essential that we understand the
-basic structures of these types of data and the types of data
-that they can be used to represent. Many maps have a combination of vector
-and raster data. For example, when you use satellite view in Google Maps, you
-are seeing vector data such as roads and places layered on top of aerial imagery.
-
-## About Raster Data
-
-Raster data is any pixelated (or gridded) data where each pixel is associated
-with a specific geographic location. The value of a pixel can be
-continuous (e.g. elevation) or categorical (e.g. land use). If this sounds
-familiar, it is because this data structure is very common: it's how
-we represent any digital image. A geospatial raster is only different
-from a digital photo in that it is accompanied by spatial information
-that connects the data to a particular location. This includes the
-raster's *extent*, cell size, the number of rows and columns, and
-its coordinate reference system (or CRS).
-
-![Raster Concept (Source: National Ecological Observatory Network (NEON))](images/E01/raster_concept.png){alt="raster concept"}
-
-Some examples of continuous rasters include:
-
-1. Precipitation maps,
-2. Maps of tree height derived from [lidar](https://oceanservice.noaa.gov/facts/lidar.html) data,
-3. Elevation values for a region.
-
-A map of elevation for Harvard Forest derived from the [NEON AOP LiDAR sensor](https://www.neonscience.org/data-collection/airborne-remote-sensing)
-is below. Elevation is represented as a continuous numeric variable in this map. The legend
-shows the continuous range of values in the data from around 300 to 420 meters.
-
-![Continuous Elevation Map: HARV Field Site](images/E01/continuous-elevation-HARV-plot-01.png){alt="elevation Harvard forest"}
-
-Some rasters contain categorical data where each pixel represents a discrete
-class such as a landcover type (e.g., "forest" or "grassland") rather than a
-continuous value such as elevation or temperature. Some examples of classified
-maps include:
-
-1. Landcover / land-use maps,
-2. Tree height maps classified as short, medium, and tall trees.
-3. Elevation maps classified as low, medium, and high elevation.
-
-![USA landcover classification](images/E01/USA_landcover_classification.png){alt="USA landcover classification"}
-
-The map above shows the contiguous United States with landcover as categorical
-data. Each color is a different landcover category. (Source: Homer, C.G., et
-al., 2015, Completion of the 2011 National Land Cover Database for the
-conterminous United States-Representing a decade of land cover change
-information. Photogrammetric Engineering and Remote Sensing, v. 81, no. 5, p.
-345-354)
-
-:::callout
-### Challenge - Advantages and Disadvantages
-Think about potential advantages and
-disadvantages of storing data in raster format and list them.
-
-:::
-
-:::callout
-### Solution
-
-Raster data has some important advantages:
-
-* representation of continuous surfaces
-* potentially very high levels of detail
-* data is 'unweighted' across its extent - the geometry doesn't
-implicitly highlight features
-* cell-by-cell calculations can be very fast and efficient
-
-The downsides of raster data are:
-
-* very large file sizes as cell size gets smaller
-* currently popular formats don't embed metadata well (more on this later!)
-* can be difficult to represent complex information
-
-:::
-
-## Important Attributes of Raster Data
-
-### Extent
-
-The spatial extent is the geographic area that the raster data covers.
-The spatial extent of an object represents the geographic edge or
-location that is the furthest north, south, east and west. In other words, extent
-represents the overall geographic coverage of the spatial object.
-
-![Spatial extent image (Image Source: National Ecological Observatory Network (NEON))](images/E01/spatial_extent.png){alt="spatial extent objects"}
-
-:::callout
-### Challenge - Extent Challenge
-
-In the image above, the dashed boxes around each set of objects
-seems to imply that the three objects have the same extent. Is this
-accurate? If not, which object(s) have a different extent?
-:::
-
-:::callout
-### Solution
-
-The lines and polygon objects have the same extent. The extent for
-the points object is smaller in the vertical direction than the
-other two because there are no points on the line at y = 8.
-:::
-
-### Resolution
-
-A resolution of a raster represents the area on the ground that each
-pixel of the raster covers. The image below illustrates the effect
-of changes in resolution.
-
-![Resolution image (Source: National Ecological Observatory Network (NEON))](images/E01/raster_resolution.png){alt="resolution image"}
-
-## Raster Data Format for this Module
-
-Raster data can come in many different formats. We will use
-the GeoTIFF format which has the extension `.tif`. A `.tif` file stores metadata
-or attributes about the file as embedded `tif tags` along with the actual raster data. For instance, your camera
-might store a tag that describes the make and model of the camera or the date
-the photo was taken when it saves a `.tif`. A GeoTIFF is a standard `.tif` image
-format with additional spatial (georeferencing) information embedded in the file
-as tags. These tags should include the following raster metadata:
-
-1. Extent
-2. Resolution
-3. Coordinate Reference System (CRS) - we will introduce this concept in [a later section](intro_crs.md)
-4. Values that represent missing data (`NoDataValue`) - we will introduce this
-   concept in [a later section](06-raster-intro.md).
-
-We will discuss these attributes in more detail in [a later section](06-raster-intro.md).
-
-:::callout
-## More Resources on the  `.tif` format
-
-* [GeoTIFF on Wikipedia](https://en.wikipedia.org/wiki/GeoTIFF)
-* [OSGEO TIFF documentation](https://trac.osgeo.org/geotiff/)
-:::
-
-## Multi-band Raster Data
-
-A raster can contain one or more *bands*. One type of multi-band raster
-dataset that is familiar to many of us is a color
-image. A basic color image consists of three bands: red, green, and blue.
-Each band represents light reflected from the red, green or blue portions of
-the [electromagnetic spectrum](https://imagine.gsfc.nasa.gov/science/toolbox/emspectrum1.html). The pixel brightness for each band, when
-composited creates the colors that we see in an image.
-
-![RGB multi-band raster image (Source: National Ecological Observatory Network (NEON).)](images/E01/RGBSTack_1.jpg){alt="multi-band raster"}
-
-We can plot each band of a multi-band image individually.
-
-Or we can composite all three bands together to make a color image.
-
-In a multi-band dataset, the rasters will always have the same extent,
-resolution, and CRS.
-
-
-## Other Types of Multi-band Raster Data
-
-Multi-band raster data might also contain:
-
-1. **Time series:** the same variable, over the same area, over time.
-2. **Multi or hyperspectral imagery:** image rasters that have 4 or
-more (multi-spectral) or more than 10-15 (hyperspectral) bands. We
-won't be working with this type of data in this module, but you can
-check out the NEON Data Skills [Imaging Spectroscopy HDF5 in R](https://www.neonscience.org/hsi-hdf5-r)
-tutorial if you're interested in working with hyperspectral data cubes.
-
-
-:::callout
-- Raster data is pixelated data where each pixel is associated with a specific location.
-- Raster data always has an extent and a resolution.
-- The extent is the geographical area covered by a raster.
-- The resolution is the area covered by each pixel of a raster.
-:::
-
-## Case Study: Land use analysis on the OU campus
-
-Throughout this module, we will use this case study to allow you to get some
-hands on practice with the topics covered. For this first module, you'll
-be working through a Jupyter notebook that introduces the overall case study and
-gives you an introduction to working with relevant raster data representing
-land use on the OU campus. You'll get your first look at two import Python packages
-for working with raster data - xarray and rioxarray.
-
-### [xarray](https://docs.xarray.dev/en/stable/) - labelled multidimension arrays
-
-Xarray builds on top of NumPy N-d arrays and adds the ability to create and work with labels for the dimensions. 
-
-> Xarray makes working with labelled multi-dimensional arrays in Python simple, efficient, and fun!
-
-The two main data structures are `DataArray` (a N-d generalization of a `pandas.Series`) and `DataSet` (an N-d generalization of a `pandas.DataFrame`). The [Overview: Why xarray?](https://docs.xarray.dev/en/stable/getting-started-guide/why-xarray.html) page has a nice level of detail on the case for xarray and its link to geospatial analysis.
-
-### [rioxarray](https://corteva.github.io/rioxarray/html/readme.html) - read raster data into xarray objects
-
-The rioxarray package extends the xarray package to facilitate reading raster data into xarray objects. The actual reading of the raster file is done using another Python package known as [rasterio](https://rasterio.readthedocs.io/en/latest/). Once you load rioxarray, your can use the `rio` accessor with xarray objects to access rioxarray methods for working with raster data. From the rasterio docs:
-
-> Geographic information systems use GeoTIFF and other formats to organize and store gridded raster datasets such as satellite imagery and terrain models. Rasterio reads and writes these formats and provides a Python API based on Numpy N-dimensional arrays and GeoJSON.
-
-### Software setup for the case study
-
-You should already have the Anaconda distribution of Python installed and working. Due to the
-large number of libraries needed for geospatial analysis, we are also going to create and
-use a new Conda virtual environment for this module.
-
-**TODO** Instructions for creating virtual env.
 
 ### Activities
 

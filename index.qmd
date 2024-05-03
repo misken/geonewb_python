@@ -87,4 +87,17 @@ You should already have the Anaconda distribution of Python installed and workin
 large number of libraries needed for geospatial analysis, we are also going to create and
 use a new Conda virtual environment for this module.
 
-**TODO** Instructions for creating virtual env.
+**Step 1** - Download [geonewb.yml](https://drive.google.com/file/d/1aLpEHcrwpfrDoXS2MJZmROlpGpNlWPUM/view?usp=sharing) this conda environment YAML file.
+
+**Step 2** - Open an Anaconda Prompt and change directories to the place where you downloaded `geonewb.yml`. Create the new environment with:
+
+```
+conda env create -f geonewb.yml
+```
+
+::: {.callout-warning}
+This can take several minutes. Be patient.
+:::
+
+Later, when you are working in Jupyter notebooks for this module, you'll select
+the `geonewb` virtual environment to use for your work.
