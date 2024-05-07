@@ -142,8 +142,8 @@ give you the ability to access functions unique to particular programs, but have
 entire workflow recorded in a central document - a document that can be re-run at will.
 Below are lists of some of the key spatial packages for Python.
 
-  * `geopandas` and `geocube` for working with vector data
-  * `rasterio` and `rioxarray` for working with raster data
+  * **geopandas** and **geocube** for working with vector data
+  * **rasterio** and **rioxarray** for working with raster data
 
 These packages along with the `matplotlib` package are all we need for spatial data visualisation. Python also has many fundamental scientific packages that are relevant in the geospatial domain. Below is a list of particularly fundamental packages. `numpy`, `scipy`, and `scikit-image` are all excellent options for working with rasters, as arrays.
 

@@ -12,6 +12,9 @@ There are two primary data types that we will learn about for storing geospatial
 
 ## Readings and Resources
 
+GCwP = "Gecomputation with Python" online text
+GCwR = "Gecomputation with R" online text
+
 - GCwP - [Ch 1: Geographic Data in Python - Section 1.3](https://py.geocompx.org/01-spatial-data#sec-raster-data)
 - GCwR - [Ch 2: Geographic Data in R - Section 2.3](https://r.geocompx.org/spatial-class#raster-data)
 - [GIS Stack Exchange](https://gis.stackexchange.com/) is like StackOverflow for geospatial questions. Very helpful.
@@ -19,7 +22,7 @@ There are two primary data types that we will learn about for storing geospatial
 Yes, I know this class is Python based, but I'm including the second reference for a few reasons. First of all,
 it has outstanding, well written, content. Secondly, R has many strengths for geospatial analysis
 and mapping and most of you have already learned both R and Python basics in my previous course. It's good to be aware
-of the R ecosystem for geospatial as then you can pick and choose your tools as you see fit. R and Python are becoming
+of the R ecosystem for geocomputation as then you can pick and choose your tools as you see fit. R and Python are becoming
 more interoperable as time goes on and mixing the two is becoming quite common.
 
 ## Data Structures: Raster and Vector
@@ -36,7 +39,7 @@ data sets, therefore it is essential that we understand the
 basic structures of these types of data and the types of data
 that they can be used to represent. Many maps have a combination of vector
 and raster data. For example, when you use satellite view in Google Maps, you
-are seeing vector data such as roads and places layered on top of aerial imagery.
+are seeing vector data such as roads and places layered on top of aerial imagery which is raster data.
 
 ## About Raster Data
 
@@ -47,7 +50,7 @@ familiar, it is because this data structure is very common: it's how
 we represent any digital image. A geospatial raster is only different
 from a digital photo in that it is accompanied by spatial information
 that connects the data to a particular location. This includes the
-raster's *extent*, cell size, the number of rows and columns, and
+raster's *extent* (the area represented by the raster), cell size, the number of rows and columns, and
 its coordinate reference system (or CRS).
 
 ![Raster Concept (Source: National Ecological Observatory Network (NEON))](images/E01/raster_concept.png){alt="raster concept"}
@@ -158,7 +161,7 @@ as tags. These tags should include the following raster metadata:
 3. Coordinate Reference System (CRS) - we will introduce this concept in [a later section](intro_crs.md)
 4. Values that represent missing data (`NoDataValue`) 
 
-We will discuss these attributes in more detail in [a later section](06_working_raster_data.md).
+We will discuss these attributes in more detail in later sections.
 
 :::callout
 ## More Resources on the  `.tif` format
@@ -179,8 +182,7 @@ composited creates the colors that we see in an image.
 ![RGB multi-band raster image (Source: National Ecological Observatory Network (NEON).)](images/E01/RGBSTack_1.jpg){alt="multi-band raster"}
 
 We can plot each band of a multi-band image individually. Or, we can composite all three bands together to make a color image.
-In a multi-band dataset, the individual band rasters will always have the same extent,
-resolution, and CRS.
+In a multi-band dataset, the individual band rasters will always have the same extent, resolution, and CRS.
 
 Multi-band raster data might also contain:
 
@@ -206,7 +208,7 @@ hands on practice with the topics covered. For this first module, you'll
 be working through a Jupyter notebook that introduces the overall case study and
 gives you an introduction to working with relevant raster data representing
 land use on the OU campus. You'll get your first look at two import Python packages
-for working with raster data - xarray and rioxarray.
+for working with raster data - **xarray** and **rioxarray**.
 
 ### [xarray](https://docs.xarray.dev/en/stable/) - labelled multidimension arrays
 
@@ -225,17 +227,17 @@ The rioxarray package extends the xarray package to facilitate reading raster da
 
 ### Activities
 
-For each section of the case study, there will usually
-be a compressed archive to download which contains the Jupyter notebook(s) as
+I have created one compressed archive 
+which contains the Jupyter notebook(s) as
 well as any data (or other) files needed. In addition, there will be one or more
 screencasts that walk you through the notebooks.
 
 Start by downloading the following file and extract it in a location of your choice.
 
 Launch Jupyter lab and open the **ou_land_use_01_rasterintro.ipynb** file. Work your
-way through out. There is also a screencast to help walk you through the notebook.
+way through it. There is also a screencast to help walk you through the notebook.
 
-- Download: [ou_land_use_01_rasterintro.zip]()
+- Download: [ou_land_use_analysis.zip]()
 
 There is a single screencast that goes along with this section:
 

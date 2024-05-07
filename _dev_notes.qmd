@@ -71,6 +71,49 @@ osmnx
 rasterstats
 contextily
 
+## Outline
+
+* Introduction to Raster Data
+  - what is it and what is it used to represent?
+  - main Python libraries for working with raster data
+  - basic plotting of raster data
+  - Case Study: reading, exploring, plotting a raster file representing land use on the OU campus
+
+* Introduction to Vector Data
+  - what is it and what is it used to represent?
+  - main Python libraries for working with vector data
+  - basic plotting of vector data
+  - Case Study: reading, exploring, plotting a vector file representing various features on the OU campus such as buildings and rivers
+
+* Coordinate Reference Systems
+  - this is a big, important, and complex topic
+  - how do we represent something like location on our planet, that is inherently 3D, on a 2D surface such as a computer screen or a piece of paper? We use something called a projected coordinate reference system (CRS).
+  - we will learn enough to be able to work effectively with data from different coordinate reference systems.
+  - Case Study: check CRS of raster and vector data, reproject data from one CRS to another
+
+* The GIS Landscape
+  - it's a big landscape
+  - software options
+
+* Accessing Satellite Imagery
+  - use MS Planetary Computer to find and download satellite imagery
+  - Case Study: Download and view Sentinel-2 images of OU campus
+
+* Working with Raster Data in Python
+  - using rioxarray and xarray packages to read, explore, and visualize raster data
+  - introduction to GDAL for converting between file formats (img -> tif), MORE STUFF
+  - common raster operations such as cropping, dealing with no data values, reprojecting and resampling
+  - raster computations such as NVDI
+  - hillshade
+  - Case Study: analyze land use patterns over time on OU campus
+
+* Working with Vector Data in Python
+  - more use of GeoPandas for vector data manipulation
+  - Case Study: overlaying rivers on OU campus raster
+
+* Making Maps
+  - using Cartopy to make a map combining vector and raster data
+
 ## Chapters
 
 ### Introduction to Raster Data

@@ -79,7 +79,11 @@ the full coordinate reference system. One common additional parameter is a
 definition of the center of the map. The number of required additional
 parameters depends on what is needed by each specific projection.
 
+:::callout
+## EPSG:4326 and WGS84
+
 Sometimes it seems like EPSG:4326 and WGS84 are used synonymously. The folks at the [MapScaping podcast](https://mapscaping.com/podcasts/) have done a nice blog post on the [relationship between EPSG:4326 and WGS84](https://mapscaping.com/difference-between-wgs84-and-epsg4326/).
+:::
 
 ## Orange Peel Analogy
 
@@ -147,7 +151,7 @@ the WKT standard is implemented inconsistently across various software platforms
 and transforming CRS information. PROJ strings continue to be used, but the format
 [is deprecated by the PROJ C maintainers](https://proj.org/faq.html#what-is-the-best-format-for-describing-coordinate-reference-systems)
 due to inaccuracies when converting to the WKT format. The data and
-python libraries we will be working with in this workshop use different
+Python libraries we will be working with in this workshop use different
 underlying representations of CRSs under the hood for reprojecting. CRS
 information can still be represented with EPSG, WKT, or PROJ strings without
 consequence, but **it is best to only use PROJ strings as a format for viewing
@@ -204,11 +208,12 @@ GDAL/OGR also relies on the [PROJ](https://proj.org/) library for [projections](
 
 Given the importance of GDAL and its use by so many geospatial software packages, it is somewhat surprising that for many years it was maintained by a single person. Check out this [Mapscaping podcast on GDAL](https://mapscaping.com/podcast/gdal-geospatial-data-abstraction-library/) for a fascinating telling of the GDAL story.
 
-As we'll see, we usually don't have to install GDAL as it will get installed when we install higher level packages such as GeoPandas.
+We usually don't have to install GDAL as it will get installed when we install higher level packages such as GeoPandas.
 
 ### [PROJ](https://proj.org/) - transform geospatial coordinates between different coordinate reference systems
 
-The PROJ library does the heavy lifting of translating between different CRS and projections. Much like GDAL, it is 
+The PROJ library does the heavy lifting of translating between different CRS and projections. Much like GDAL, it is:
+
 - open source,
 - used both as a library and command line tool,
 - foundational software to geospatial analysis,
@@ -237,6 +242,7 @@ seems proportionally larger or smaller than they actually are.
 
 ::: {.callout-note}
 ### CRS and projections
+
 If you are going to work with geospatial data, you are going to have to learn about coordinate reference systems (CRS) and map projections. The world isn't flat and it's not a perfect sphere. However, most maps are flat. Projections are a way of translating our non-flat earth to a flat representation for mapping. The CRS is a specific type of "grid system" so that numeric X-Y coordinates can be associated with any point on the map.
 
 - All geospatial datasets (raster and vector) are associated with a specific coordinate reference system.
@@ -256,12 +262,8 @@ with coordinate reference systems.
 
 ### Activities
 
-Start by downloading the following file and extract it in a location of your choice.
-
 Launch Jupyter lab and open the **ou_land_use_03_crs.ipynb** file. Work your
 way through out. 
-
-- Download: [ou_land_use_03_crs.zip]()
 
 There is a single screencast that goes along with this section:
 

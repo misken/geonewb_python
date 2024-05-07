@@ -27,7 +27,7 @@ are working with: point, line or polygon.
 
 * **Points:** Each point is defined by a single x, y coordinate. There can be
 many points in a vector point file. Examples of point data include: sampling
-locations, the location of individual trees, or the location of survey plots.
+locations, the location of individual buildings, or the location of bathrooms.
 
 * **Lines:** Lines are composed of many (at least 2) points that are connected.
 For instance, a road or a stream may be represented by a line. This line is
@@ -64,8 +64,6 @@ are represented by which vector type.
 State boundaries are polygons. The Fisher Tower location is
 a point. There are no line features shown.
 :::
-
-
 
 Vector data has some important advantages:
 
@@ -109,7 +107,7 @@ Together, the Shapefile includes the following information:
 the shapefile covers). The spatial extent for a shapefile represents the
 combined extent for all spatial objects in the shapefile.
 * **Object type** - whether the shapefile includes points, lines, or polygons.
-* **Coordinate reference system (CRS)**
+* **Coordinate reference system (CRS)** - more on this later.
 * **Other attributes** - for example, a line shapefile that contains the
 locations of streams, might contain the name of each stream.
 
@@ -147,9 +145,11 @@ within the same container file. These include [GeoPackage](https://www.geopackag
 - Vector objects are either points, lines, or polygons.
 :::
 
-## [GeoPandas](https://geopandas.org/en/stable/) - add geospatial functionality to pandas
+How might we store and use vector data in Python?
 
-The basic idea is to combine the capabilities of pandas with the **shapely** library to allow you to work with geospatial data in a **pandas**-like way.
+##  Add geospatial functionality to pandas
+
+The basic idea behind [GeoPandas](https://geopandas.org/en/stable/) is to combine the capabilities of pandas with the **shapely** library to allow you to work with geospatial data in a **pandas**-like way.
 
 > GeoPandas is an open source project to make working with geospatial data in python easier. GeoPandas extends the datatypes used by pandas to allow spatial operations on geometric types. Geometric operations are performed by [shapely](https://shapely.readthedocs.io/en/stable/index.html). GeoPandas further depends on [fiona](https://fiona.readthedocs.io/en/stable/) for file access and matplotlib for plotting.
 
@@ -221,12 +221,8 @@ with vector data in shapefile format.
 
 ### Activities
 
-Start by downloading the following file and extract it in a location of your choice.
-
 Launch Jupyter lab and open the **ou_land_use_02_vectorintro.ipynb** file. Work your
-way through out. 
-
-- Download: [ou_land_use_02_vectorintro.zip]()
+way through it. 
 
 There is a single screencast that goes along with this section:
 

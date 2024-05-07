@@ -24,28 +24,15 @@ Our objective are:
 ## Introduce the Data
 
 We will use the image file that we downloaded and saved from the last notebook. You can
-find the T17TLH_20240401T162831_TCI_10m.tif file in TODO. 
-
-
-
-We also use the cropped fields polygons `fields_cropped.shp`, which was generated in an exercise from [Episode 7: Vector data in python](07-vector-data-in-python.md).
-
+find the T17TLH_20240401T162831_TCI_10m.tif file in `data` folder in the compressed
+file you downloaded in the first section of this module.
 
 ### Activities
 
-For each section of the case study, there will usually
-be a compressed archive to download which contains the Jupyter notebook(s) as
-well as any data (or other) files needed. In addition, there will be one or more
-screencasts that walk you through the notebooks.
-
-Start by downloading the following file and extract it in a location of your choice.
-
-Launch Jupyter lab and open the **ou_land_use_01_rasterintro.ipynb** file. Work your
-way through out. There is also a screencast to help walk you through the notebook.
-
-- Download: [ou_land_use_01_rasterintro.zip]()
+Launch Jupyter lab and open the **ou_land_use_06_raster_work.ipynb** file. Work your
+way through it. There is also a screencast to help walk you through the notebook.
 
 There is a single screencast that goes along with this section:
 
-- Screencast: [Intro to raster data and land use on the OU campus]()
+- Screencast: [Working with raster data]()
 

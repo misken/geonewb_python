@@ -71,22 +71,24 @@ access data from different missions, instruments and collections using the same 
 There are general STAC browsers such as the one at [Radiant Earth](https://radiantearth.github.io/stac-browser/#/). It is good starting point to discover available
 datasets, as it provides an up-to-date list of existing STAC catalogs. However, we are going to use the STAC browsing tools available through the Planetary Computer.
 
-:::challenge
 ## Exercise: Discover a STAC catalog
+
 Let's take a moment to explore the Planetary Computer STAC catalog, which contains a large number of datasets spanning numerous areas such as air quality, climate, biodiversity, imagery, fires, weather, land use and more. Start by going to the main [Data Catalog](https://planetarycomputer.microsoft.com/catalog) page. Spend some time browsing the various categories to see the breadth of data that is available. Then go to the [Sentinel-2 Level-2A](https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a) page. Click the big blue button on the right labelled View in Explorer. You can navigate around somewhat like you do with Google Earth or Maps. Find the OU campus. As you scroll around on the map, the list of image tiles will continually update along the left side of the screen. Notice that the default is the most recent images with low cloud cover at the top. 
 
 Pick one of the images from the list on the left. If you click, the Show on Map icon in the lower right corner of the image preview, you'll see the satellite image superimposed on the map. If you click the squiggly bracket icon just to the left of the Show on Map icon, you'll get a window with a Python code snippet for accessing the *assets* of this map. We'll learn more about this shortly.
 
 ![Views of the STAC browser](images/E05/ou_image_on_map.png){alt="STAC browser screenshots"}
 
+::: {.callout-tip}
+### Challenge - Extent
+
 Scroll down through the image properties on the left. What CRS is this image using?
+:::
 
-
-::::solution
+::: {.callout-tip collapse="true"}
+### Solution
 The EPSG code is 32627. This is associated with the CRS WGS 84 / UTM zone 17N.
 See [https://epsg.io/?q=32617](https://epsg.io/?q=32617).
-
-::::
 :::
 
 
@@ -103,7 +105,14 @@ accessed independently. By providing this "pyramidal" structure, users that are 
 by a high-resolution raster can directly access the lower-resolution versions of the same image, significantly saving
 on the downloading time. More information on the COG format can be found [here](https://www.cogeo.org).
 
+### Activities
 
+Launch Jupyter lab and open the **ou_land_use_05_satellite.ipynb** file. Work your
+way through it. 
+
+There is a single screencast that goes along with this section:
+
+- Screencast: [Intro to satellite imagery]()
 
 
 
