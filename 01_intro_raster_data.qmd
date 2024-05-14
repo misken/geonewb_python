@@ -210,6 +210,6 @@ Start by downloading the following file and extract it in a location of your cho
 Launch Jupyter lab and open the **ou_land_use_01_rasterintro.ipynb** file. Work your
 way through it. 
 
-- Download: [ou_land_use_analysis.zip]()
+- Download: [ou_land_use_analysis.zip](https://drive.google.com/file/d/14PbeJiZn-rrIXcQq8QMinT6bnxjNx-h-/view?usp=sharing)
 
 
