@@ -2,10 +2,7 @@
 jupyter: python3
 ---
 
-# An brief introduction to Python for gecomputation
-
-
-## What is this module all about?
+# Overview
 
 This is an introduction to the world of geospatial analysis, or geocomputation, using Python. Since you
 are in this class, you already have a good working knowledge of using Python for
@@ -28,12 +25,12 @@ All of the materials I'm using are licensed under [CC-BY 4.0](https://creativeco
 of my materials in this module use the same [CC-BY 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.
 
 My original plan was to use the templates from The Carpentries for this module as they are based on using R Markdown. However,
-recently, they lost funding that led to layoffs and it doesn't look like there are resoures for continued development of the [Carpentries Workbench](https://carpentries.github.io/workbench/). With the advent of Quarto, I was hoping that the Carpentries templates would evolve to support it, but that doesn't seem to be in the cards. So, I'm using some of their content and ideas, but am developing this module using Quarto. Quarto is a computational authoring tool that is somewhat language agnostic. While Quarto is the next generation of R Markdown, it also supports Python code chunks. You can find the GitHub repo for this module at [https://github.com/misken/geonewb_python](https://github.com/misken/geonewb_python).
+recently they lost funding that led to layoffs and it doesn't look like there are resoures for continued development of the [Carpentries Workbench](https://carpentries.github.io/workbench/). With the advent of Quarto, I was hoping that the Carpentries templates would evolve to support it, but that doesn't seem to be in the cards. So, I'm using some of their content and ideas, but am developing this module using Quarto. Quarto is a computational authoring tool that supports multiple programming languages. While Quarto is the next generation of R Markdown, it also supports Python code chunks. You can find the GitHub repo for this module at [https://github.com/misken/geonewb_python](https://github.com/misken/geonewb_python).
 
 This module will also use the extremely good online texts:
 
-- [Geocomputation with Python](https://py.geocompx.org/)
-- [Geocomputation with R](https://r.geocompx.org/)
+- [Geocomputation with Python](https://py.geocompx.org/) (GCwP)
+- [Geocomputation with R](https://r.geocompx.org/) (GCwR)
 
 ## Module structure
 
@@ -84,7 +81,7 @@ You should already have the Anaconda distribution of Python installed and workin
 large number of libraries needed for geospatial analysis, we are also going to create and
 use a new Conda virtual environment for this module.
 
-**Step 1** - Download [geonewb.yml](https://drive.google.com/file/d/1aLpEHcrwpfrDoXS2MJZmROlpGpNlWPUM/view?usp=sharing) this conda environment YAML file.
+**Step 1** - Download the [geonewb.yml](https://drive.google.com/file/d/1aLpEHcrwpfrDoXS2MJZmROlpGpNlWPUM/view?usp=sharing) conda environment YAML file.
 
 **Step 2** - Open an Anaconda Prompt and change directories to the place where you downloaded `geonewb.yml`. Create the new environment with:
 

@@ -1,0 +1,28 @@
+# Minimal install of GeoPandas
+# When doing conda-forge installs, first do a
+# conda config --set channel_priority strict
+name: quarto_geonewb
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy
+  - pandas
+  - matplotlib
+  - jupyter
+  - jupyterlab
+  - ipykernel
+#
+  - rioxarray
+  - geopandas
+  - shapely
+  - cartopy
+  - pystac
+  - planetary-computer
+  - osmnx
+  - rasterstats
+  - contextily
+
+# Environment level pip
+  - pip

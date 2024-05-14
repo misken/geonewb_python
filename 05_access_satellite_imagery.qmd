@@ -4,9 +4,6 @@ jupyter: python3
 
 # Access satellite imagery using Python
 
-
-## Intro and Objectives
-
 A number of satellites take snapshots of the Earth's surface from space. The images recorded by these remote sensors represent a very precious data source for any activity that involves monitoring changes on Earth. Satellite imagery is typically provided in the form of geospatial raster data, with the measurements in each grid cell ("pixel") being linked with accurate geographic coordinate information.
 
 In this episode we will explore how to access open satellite data using Python. In particular,  we will
@@ -110,9 +107,7 @@ on the downloading time. More information on the COG format can be found [here](
 Launch Jupyter lab and open the **ou_land_use_05_satellite.ipynb** file. Work your
 way through it. 
 
-There is a single screencast that goes along with this section:
 
-- Screencast: [Intro to satellite imagery]()
 
 
 

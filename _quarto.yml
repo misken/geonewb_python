@@ -10,6 +10,8 @@ book:
       - 02_intro_vector_data.qmd
       - 03_intro_crs.qmd
       - 04_gis_landscape.qmd
+      - 05_access_satellite_imagery.qmd
+      - 06_working_raster_data.qmd
   
   page-navigation: true
 

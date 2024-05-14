@@ -2,18 +2,16 @@
 jupyter: python3
 ---
 
-# Introduction to Raster Data
+# Introduction to raster data
 
-There are two primary data types that we will learn about for storing geospatial data - raster and vector data. We will start out learning about raster data. Our objective are:
+There are two primary data types that we will learn about for storing geospatial data - raster and vector data. We will start out learning about raster data. You will
+be able to:
 
 - Describe the difference between raster and vector data.
 - Describe the strengths and weaknesses of storing data in raster format.
 - Distinguish between continuous and categorical raster data and identify types of datasets that would be stored in each format.
 
-## Readings and Resources
-
-GCwP = "Gecomputation with Python" online text
-GCwR = "Gecomputation with R" online text
+## Readings and resources
 
 - GCwP - [Ch 1: Geographic Data in Python - Section 1.3](https://py.geocompx.org/01-spatial-data#sec-raster-data)
 - GCwR - [Ch 2: Geographic Data in R - Section 2.3](https://r.geocompx.org/spatial-class#raster-data)
@@ -25,14 +23,14 @@ and mapping and most of you have already learned both R and Python basics in my 
 of the R ecosystem for geocomputation as then you can pick and choose your tools as you see fit. R and Python are becoming
 more interoperable as time goes on and mixing the two is becoming quite common.
 
-## Data Structures: Raster and Vector
+## Data structures: raster and vector
 
 The two primary types of geospatial data are raster
 and vector data. Raster data is stored as a grid of values which are rendered on a
 map as pixels. Each pixel value represents an area on the Earth's surface. Vector data structures represent specific features on the
 Earth's surface (e.g. boundaries, bodies of water, roads, buildings, dams, parks, ...), and
 assign attributes to those features. Vector data structures
-will be discussed in more detail in [the next section](02_intro_vector_data.md).
+will be discussed in more detail in @sec-introvector.
 
 This module will focus on how to work with both raster and vector
 data sets, therefore it is essential that we understand the
@@ -41,7 +39,7 @@ that they can be used to represent. Many maps have a combination of vector
 and raster data. For example, when you use satellite view in Google Maps, you
 are seeing vector data such as roads and places layered on top of aerial imagery which is raster data.
 
-## About Raster Data
+## About raster data
 
 Raster data is any pixelated (or gridded) data where each pixel is associated
 with a specific geographic location. The value of a pixel can be
@@ -111,32 +109,8 @@ The downsides of raster data are:
 
 :::
 
-## Important Attributes of Raster Data
+## Important attributes of raster data
 
-### Extent
-
-The spatial extent is the geographic area that the raster data covers.
-The spatial extent of an object represents the geographic edge or
-location that is the furthest north, south, east and west. In other words, extent
-represents the overall geographic coverage of the spatial object.
-
-![Spatial extent image (Image Source: National Ecological Observatory Network (NEON))](images/E01/spatial_extent.png){alt="spatial extent objects"}
-
-::: {.callout-tip}
-### Challenge - Extent
-
-In the image above, the dashed boxes around each set of objects
-seems to imply that the three objects have the same extent. Is this
-accurate? If not, which object(s) have a different extent?
-:::
-
-::: {.callout-tip collapse="true"}
-### Solution
-
-The lines and polygon objects have the same extent. The extent for
-the points object is smaller in the vertical direction than the
-other two because there are no points on the line at y = 8.
-:::
 
 ### Resolution
 
@@ -146,7 +120,7 @@ of changes in resolution.
 
 ![Resolution image (Source: National Ecological Observatory Network (NEON))](images/E01/raster_resolution.png){alt="resolution image"}
 
-## Raster Data Format for this Module
+## Raster data format for this module
 
 Raster data can come in many different formats. We will use
 the GeoTIFF format which has the extension `.tif`. A `.tif` file stores metadata
@@ -158,7 +132,7 @@ as tags. These tags should include the following raster metadata:
 
 1. Extent
 2. Resolution
-3. Coordinate Reference System (CRS) - we will introduce this concept in [a later section](intro_crs.md)
+3. Coordinate Reference System (CRS) - we will introduce this concept in @sec-introcrs.
 4. Values that represent missing data (`NoDataValue`) 
 
 We will discuss these attributes in more detail in later sections.
@@ -170,7 +144,7 @@ We will discuss these attributes in more detail in later sections.
 * [OSGEO TIFF documentation](https://trac.osgeo.org/geotiff/)
 :::
 
-## Multi-band Raster Data
+## Multi-band raster data
 
 A raster can contain one or more *bands*. One type of multi-band raster
 dataset that is familiar to many of us is a color
@@ -229,17 +203,13 @@ The rioxarray package extends the xarray package to facilitate reading raster da
 
 I have created one compressed archive 
 which contains the Jupyter notebook(s) as
-well as any data (or other) files needed. In addition, there will be one or more
-screencasts that walk you through the notebooks.
+well as any data (or other) files needed. 
 
 Start by downloading the following file and extract it in a location of your choice.
 
 Launch Jupyter lab and open the **ou_land_use_01_rasterintro.ipynb** file. Work your
-way through it. There is also a screencast to help walk you through the notebook.
+way through it. 
 
 - Download: [ou_land_use_analysis.zip]()
 
-There is a single screencast that goes along with this section:
-
-- Screencast: [Intro to raster data and land use on the OU campus]()
 

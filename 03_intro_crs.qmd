@@ -2,7 +2,7 @@
 jupyter: python3
 ---
 
-# Introduction to Coordinate Reference Systems
+# Introduction to coordinate reference systems {#sec-introcrs}
 
 In order to do geospatial analysis and to create maps, we need to make sure all of our data is using the same
 *projected coordinate reference system*. The topic of coordinate reference systems and map projections is large and can be quite complex (and fascinating). After this module you should be able to:
@@ -11,13 +11,13 @@ In order to do geospatial analysis and to create maps, we need to make sure all 
 - Name some common schemes for describing coordinate reference systems.
 - Interpret a PROJ4 and/or WKT coordinate reference system description.
 
-## Readings and Resources
+## Readings and resources
 
 - GCwP - [Ch 1: Geographic Data in Python - Section 1.4](https://py.geocompx.org/01-spatial-data#sec-coordinate-reference-systems-intro) 
 - GCwR - [Section 2.4: Coordinate Reference Systems](https://r.geocompx.org/spatial-class#crs-intro)
 - [booklet written by ESRI](http://downloads2.esri.com/support/documentation/ao_/710Understanding_Map_Projections.pdf)
 
-## Coordinate Reference Systems
+## Coordinate reference systems
 
 A data structure cannot be considered geospatial unless it is accompanied by
 coordinate reference system (CRS) information, in a format that geospatial
@@ -85,7 +85,7 @@ parameters depends on what is needed by each specific projection.
 Sometimes it seems like EPSG:4326 and WGS84 are used synonymously. The folks at the [MapScaping podcast](https://mapscaping.com/podcasts/) have done a nice blog post on the [relationship between EPSG:4326 and WGS84](https://mapscaping.com/difference-between-wgs84-and-epsg4326/).
 :::
 
-## Orange Peel Analogy
+## Orange peel analogy
 
 A common analogy employed to teach projections is the orange peel analogy. If
 you imagine that the Earth is an orange, how you peel it and then flatten the
@@ -120,7 +120,7 @@ Take the time to identify a projection that is suited for your project.
 You don't have to stick to the ones that are popular.
 :::
 
-## Describing Coordinate Reference Systems
+## Describing coordinate reference systems
 
 There are several common systems in use for storing and transmitting CRS
 information, as well as translating among different CRSs. These systems
@@ -137,7 +137,8 @@ CRSs defined by EPSG and cannot customise them (some datasets do not have EPSG c
 excellent website for finding suitable projections by location or for finding information about a
 particular EPSG code.
 
-### Well-Known Text
+### Well-Known text (WKT)
+
 The Open Geospatial Consortium WKT standard is used by a number of important geospatial apps and
 software libraries. WKT is a nested list of geodetic parameters. The structure of the information is
 [defined on their website](https://www.opengeospatial.org/standards/wkt-crs). WKT is valuable in
@@ -265,9 +266,7 @@ with coordinate reference systems.
 Launch Jupyter lab and open the **ou_land_use_03_crs.ipynb** file. Work your
 way through out. 
 
-There is a single screencast that goes along with this section:
 
-- Screencast: [Intro to CRSs for land use analysis]()
 
 
 

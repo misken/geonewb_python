@@ -2,7 +2,7 @@
 jupyter: python3
 ---
 
-# The GIS Landscape
+# The GIS landscape
 
 In this section you will get an overview of the GIS software landscape. After this, you should 
 be able to:
@@ -13,7 +13,7 @@ be able to:
 - Describe pros and cons for working with geospatial data using a command-line versus a graphical user interface.
 
 
-## Standalone Software Packages
+## Standalone software packages
 
 Most traditional GIS work is carried out in standalone applications that aim to provide
 end-to-end geospatial solutions. These applications are available under a wide range of
@@ -69,7 +69,7 @@ The [Open Source Geospatial Foundation (OSGEO)](https://www.osgeo.org/) supports
   * [Manifold](https://www.manifold.net/) is a desktop GIS that emphasizes speed through
   the use of parallel and GPU processing.
 
-### Online + Cloud computing
+### Online + cloud computing
 
   * [PANGEO](https://pangeo.io/) is a community organization dedicated to open and reproducible data science with python.
   They focus on the Pangeo software ecosystem for working with big
@@ -161,7 +161,7 @@ Traditional GIS apps are also moving back towards providing a scripting environm
 users, further blurring the CLI/GUI divide. ESRI have adopted Python into their
 software, and QGIS is both Python and R-friendly.
 
-## GIS File Types
+## GIS file types
 
 There are a variety of file types that are used in GIS analysis. Depending on the program you choose to use some file
 types can be used while others are not readable. Below is a brief table describing some of the most common vector and

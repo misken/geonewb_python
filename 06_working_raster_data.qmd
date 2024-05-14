@@ -2,9 +2,7 @@
 jupyter: python3
 ---
 
-# More on Working with Raster Data
-
-## Intro and Objectives
+# More on working with raster and vector data
 
 It is quite common that the raster data you have in hand is too large to process, or not all the pixels are relevant to your area of interest (AoI). In both situations, you should consider cropping your raster data before performing data analysis.
 
@@ -21,18 +19,14 @@ Our objective are:
 - GCwP - [Section 3.3: Spatial operations on raster data](https://py.geocompx.org/03-spatial-operations#sec-spatial-ras)
 - GCwP - [Section 4.3: Geometric operations on raster data](https://py.geocompx.org/04-geometry-operations#sec-geo-ras)
 
-## Introduce the Data
+## Introduce the data
 
 We will use the image file that we downloaded and saved from the last notebook. You can
-find the T17TLH_20240401T162831_TCI_10m.tif file in `data` folder in the compressed
+find the `T17TLH_20240401T162831_TCI_10m.tif` file in `data` folder in the compressed
 file you downloaded in the first section of this module.
 
 ### Activities
 
 Launch Jupyter lab and open the **ou_land_use_06_raster_work.ipynb** file. Work your
-way through it. There is also a screencast to help walk you through the notebook.
-
-There is a single screencast that goes along with this section:
-
-- Screencast: [Working with raster data]()
+way through it. 
 
