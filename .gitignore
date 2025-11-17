@@ -5,6 +5,5 @@
 *.Rproj
 
 /.quarto/
-_book
 data
 *.qgz

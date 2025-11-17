@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A brief introduction to Python for geocomputation - 4&nbsp; Introduction to coordinate reference systems</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04_gis_landscape.html" rel="next">
+<link href="./02_intro_vector_data.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A brief introduction to Python for geocomputation</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_intro_vector_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_intro_crs.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_gis_landscape.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_access_satellite_imagery.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_working_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">More on working with raster and vector data</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#readings-and-resources" id="toc-readings-and-resources" class="nav-link active" data-scroll-target="#readings-and-resources"><span class="toc-section-number">4.1</span>  Readings and resources</a></li>
+  <li><a href="#coordinate-reference-systems" id="toc-coordinate-reference-systems" class="nav-link" data-scroll-target="#coordinate-reference-systems"><span class="toc-section-number">4.2</span>  Coordinate reference systems</a></li>
+  <li><a href="#components-of-a-crs" id="toc-components-of-a-crs" class="nav-link" data-scroll-target="#components-of-a-crs"><span class="toc-section-number">4.3</span>  Components of a CRS</a></li>
+  <li><a href="#orange-peel-analogy" id="toc-orange-peel-analogy" class="nav-link" data-scroll-target="#orange-peel-analogy"><span class="toc-section-number">4.4</span>  Orange peel analogy</a></li>
+  <li><a href="#which-projection-should-i-use" id="toc-which-projection-should-i-use" class="nav-link" data-scroll-target="#which-projection-should-i-use"><span class="toc-section-number">4.5</span>  Which projection should I use?</a></li>
+  <li><a href="#describing-coordinate-reference-systems" id="toc-describing-coordinate-reference-systems" class="nav-link" data-scroll-target="#describing-coordinate-reference-systems"><span class="toc-section-number">4.6</span>  Describing coordinate reference systems</a>
+  <ul class="collapse">
+  <li><a href="#epsg" id="toc-epsg" class="nav-link" data-scroll-target="#epsg"><span class="toc-section-number">4.6.1</span>  EPSG</a></li>
+  <li><a href="#well-known-text-wkt" id="toc-well-known-text-wkt" class="nav-link" data-scroll-target="#well-known-text-wkt"><span class="toc-section-number">4.6.2</span>  Well-Known text (WKT)</a></li>
+  <li><a href="#proj" id="toc-proj" class="nav-link" data-scroll-target="#proj"><span class="toc-section-number">4.6.3</span>  PROJ</a></li>
+  </ul></li>
+  <li><a href="#format-interoperability" id="toc-format-interoperability" class="nav-link" data-scroll-target="#format-interoperability"><span class="toc-section-number">4.7</span>  Format interoperability</a>
+  <ul class="collapse">
+  <li><a href="#gdal" id="toc-gdal" class="nav-link" data-scroll-target="#gdal"><span class="toc-section-number">4.7.1</span>  GDAL</a></li>
+  <li><a href="#proj---transform-geospatial-coordinates-between-different-coordinate-reference-systems" id="toc-proj---transform-geospatial-coordinates-between-different-coordinate-reference-systems" class="nav-link" data-scroll-target="#proj---transform-geospatial-coordinates-between-different-coordinate-reference-systems"><span class="toc-section-number">4.7.2</span>  PROJ - transform geospatial coordinates between different coordinate reference systems</a></li>
+  </ul></li>
+  <li><a href="#metadata" id="toc-metadata" class="nav-link" data-scroll-target="#metadata"><span class="toc-section-number">4.8</span>  Metadata</a></li>
+  <li><a href="#more-resources-on-crs" id="toc-more-resources-on-crs" class="nav-link" data-scroll-target="#more-resources-on-crs"><span class="toc-section-number">4.9</span>  More Resources on CRS</a></li>
+  <li><a href="#case-study-land-use-analysis-on-the-ou-campus" id="toc-case-study-land-use-analysis-on-the-ou-campus" class="nav-link" data-scroll-target="#case-study-land-use-analysis-on-the-ou-campus"><span class="toc-section-number">4.10</span>  Case Study: Land use analysis on the OU campus</a>
+  <ul class="collapse">
+  <li><a href="#activities" id="toc-activities" class="nav-link" data-scroll-target="#activities"><span class="toc-section-number">4.10.1</span>  Activities</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-introcrs" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In order to do geospatial analysis and to create maps, we need to make sure all of our data is using the same <em>projected coordinate reference system</em>. The topic of coordinate reference systems and map projections is large and can be quite complex (and fascinating). After this module you should be able to:</p>
+<ul>
+<li>Describe the difference between a geographic and projected coordinate reference systems,</li>
+<li>Name some common schemes for describing coordinate reference systems.</li>
+<li>Interpret a PROJ4 and/or WKT coordinate reference system description.</li>
+</ul>
+<section id="readings-and-resources" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="readings-and-resources"><span class="header-section-number">4.1</span> Readings and resources</h2>
+<ul>
+<li>GCwP - <a href="https://py.geocompx.org/01-spatial-data#sec-coordinate-reference-systems-intro">Ch 1: Geographic Data in Python - Section 1.4</a></li>
+<li>GCwR - <a href="https://r.geocompx.org/spatial-class#crs-intro">Section 2.4: Coordinate Reference Systems</a></li>
+<li><a href="http://downloads2.esri.com/support/documentation/ao_/710Understanding_Map_Projections.pdf">booklet written by ESRI</a></li>
+</ul>
+</section>
+<section id="coordinate-reference-systems" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="coordinate-reference-systems"><span class="header-section-number">4.2</span> Coordinate reference systems</h2>
+<p>A data structure cannot be considered geospatial unless it is accompanied by coordinate reference system (CRS) information, in a format that geospatial applications can use to display and manipulate the data correctly. CRS information connects data to the Earth’s surface using a mathematical model.</p>
+<p>One very common CRS that you will encounter is known as EPSG:4326 (more on names later). EPSG:4326 is a <em>geographic coordinate system</em> and not a <em>projected coordinate system</em>.</p>
+<p>A good explanation of the difference between these two things is <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/gcs_vs_pcs/">provided by ESRI</a>.</p>
+<blockquote class="blockquote">
+<ul>
+<li>A GCS defines where the data is located on the earth’s surface.</li>
+<li>A PCS tells the data how to draw on a flat surface, like on a paper map or a computer screen.</li>
+</ul>
+</blockquote>
+<p>and</p>
+<blockquote class="blockquote">
+<p>A projected coordinate system (PCS) is a GCS that has been flattened using a map projection.</p>
+</blockquote>
+<p>The EPSG:4326 CRS uses longitude and latitude to locate points on an underlying model of the earth (<a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a>). But, this is a 3D model and any attempt to represent it in 2D (via one of countless possible <a href="https://en.wikipedia.org/wiki/Map_projection">projections</a>) will lead to different degrees of distortion in area, distance and angle conformance. Before plotting geographic data on some 2D surface (e.g.&nbsp;screen or paper) we need to pick an appropriate projected coordinate reference system.</p>
+<p>The CRS associated with a dataset tells your mapping software (for example Python) where the data is located in geographic space. It also tells the mapping software what method should be used to flatten or project the data in geographic space.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://media.opennews.org/cache/06/37/0637aa2541b31f526ad44f7cb2db7b6c.jpg" class="img-fluid figure-img" alt="US difference projections"></p>
+<p></p><figcaption class="figure-caption">Maps of the United States in different projections (Source: opennews.org)</figcaption><p></p>
+</figure>
+</div>
+<p>The above image shows maps of the United States in different projections. Notice the differences in shape associated with each projection. These differences are a direct result of the calculations used to flatten the data onto a 2-dimensional map.</p>
+<p>There are lots of great resources that describe coordinate reference systems and projections in greater detail. For the purposes of this module, what is important to understand is that data from the same location but saved in different projections will not line up in any GIS or other program. Thus, it’s important when working with spatial data to identify the coordinate reference system applied to the data and retain it throughout data processing and analysis.</p>
+</section>
+<section id="components-of-a-crs" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="components-of-a-crs"><span class="header-section-number">4.3</span> Components of a CRS</h2>
+<p>CRS information has three components:</p>
+<ul>
+<li><p><strong>Datum:</strong> A model of the shape of the earth. It has angular units (degrees) and defines the starting point (where is [0,0]?) so that the angles reference a meaningful spot on the earth. Common global datums are WGS84 and NAD83. Datums can also be local - fit to a particular area of the globe, but ill-fitting outside the area of intended use. In this module, we will use the <a href="https://www.linz.govt.nz/data/geodetic-system/datums-projections-and-heights/geodetic-datums/world-geodetic-system-1984-wgs84">WGS84 datum</a>.</p></li>
+<li><p><strong>Projection:</strong> A mathematical transformation of the angular measurements on a round earth to a flat surface (i.e.&nbsp;paper or a computer screen). The units associated with a given projection are usually linear (feet, meters, etc.). In this module, we will see data in a few different projections.</p></li>
+<li><p><strong>Additional Parameters:</strong> Additional parameters are often necessary to create the full coordinate reference system. One common additional parameter is a definition of the center of the map. The number of required additional parameters depends on what is needed by each specific projection.</p></li>
+</ul>
+<div class="callout callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+EPSG:4326 and WGS84
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sometimes it seems like EPSG:4326 and WGS84 are used synonymously. The folks at the <a href="https://mapscaping.com/podcasts/">MapScaping podcast</a> have done a nice blog post on the <a href="https://mapscaping.com/difference-between-wgs84-and-epsg4326/">relationship between EPSG:4326 and WGS84</a>.</p>
+</div>
+</div>
+</section>
+<section id="orange-peel-analogy" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="orange-peel-analogy"><span class="header-section-number">4.4</span> Orange peel analogy</h2>
+<p>A common analogy employed to teach projections is the orange peel analogy. If you imagine that the Earth is an orange, how you peel it and then flatten the peel is similar to how projections get made.</p>
+<ul>
+<li>A datum is the choice of fruit to use. Is the Earth an orange, a lemon, a lime, a grapefruit?</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E03/citrus.jpg" class="img-fluid figure-img" alt="datum fruit example"></p>
+<p></p><figcaption class="figure-caption">Datum Fruit Example (<a href="https://github.com/MicheleTobias/R-Projections-Workshop">Image source</a>)</figcaption><p></p>
+</figure>
+</div>
+<p>A projection is how you peel your orange and then flatten the peel.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E03/orange-peel-earth.jpg" class="img-fluid figure-img" alt="projection citrus peel"></p>
+<p></p><figcaption class="figure-caption">Projection Citrus Peel Example (Image from Prof Drika Geografia, Projeções Cartográficas)</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li>An additional parameter could include a definition of the location of the stem of the fruit. What other parameters could be included in this analogy?</li>
+</ul>
+</section>
+<section id="which-projection-should-i-use" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="which-projection-should-i-use"><span class="header-section-number">4.5</span> Which projection should I use?</h2>
+<p>To decide if a projection is right for your data, answer these questions:</p>
+<ul>
+<li>What is the area of minimal distortion?</li>
+<li>What aspect of the data does it preserve?</li>
+</ul>
+<p><a href="https://foote.geography.uconn.edu/gcraft/notes/mapproj/mapproj_f.html">Peter Dana from the University of Colorado at Boulder</a> and the <a href="https://kartoweb.itc.nl/geometrics/Map%20projections/mappro.html">Department of Geo-Information Processing</a> have a good discussion of these aspects of projections. Online tools like <a href="https://projectionwizard.org/">Projection Wizard</a> can also help you discover projections that might be a good fit for your data.</p>
+<div class="callout callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Data Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Take the time to identify a projection that is suited for your project. You don’t have to stick to the ones that are popular.</p>
+</div>
+</div>
+</section>
+<section id="describing-coordinate-reference-systems" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="describing-coordinate-reference-systems"><span class="header-section-number">4.6</span> Describing coordinate reference systems</h2>
+<p>There are several common systems in use for storing and transmitting CRS information, as well as translating among different CRSs. These systems generally comply with ISO 19111. Common systems for describing CRSs include EPSG, OGC WKT, and PROJ strings.</p>
+<section id="epsg" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="epsg"><span class="header-section-number">4.6.1</span> EPSG</h3>
+<p>The <a href="https://epsg.org/home.html">EPSG system</a> is a database of CRS information maintained by the International Association of Oil and Gas Producers. The dataset contains both CRS definitions and information on how to safely convert data from one CRS to another. Using EPSG is easy as every CRS has an integer identifier, e.g.&nbsp;WGS84 is EPSG:4326. The downside is that you can only use the CRSs defined by EPSG and cannot customise them (some datasets do not have EPSG codes). <a href="https://epsg.io/">epsg.io</a> is an excellent website for finding suitable projections by location or for finding information about a particular EPSG code.</p>
+</section>
+<section id="well-known-text-wkt" class="level3" data-number="4.6.2">
+<h3 data-number="4.6.2" class="anchored" data-anchor-id="well-known-text-wkt"><span class="header-section-number">4.6.2</span> Well-Known text (WKT)</h3>
+<p>The Open Geospatial Consortium WKT standard is used by a number of important geospatial apps and software libraries. WKT is a nested list of geodetic parameters. The structure of the information is <a href="https://www.opengeospatial.org/standards/wkt-crs">defined on their website</a>. WKT is valuable in that the CRS information is more transparent than in EPSG, but can be more difficult to read and compare than PROJ since it is meant to necessarily represent more complex CRS information. Additionally, the WKT standard is implemented inconsistently across various software platforms, and the spec itself has <a href="https://gdal.org/tutorials/wktproblems.html">some known issues</a>.</p>
+</section>
+<section id="proj" class="level3" data-number="4.6.3">
+<h3 data-number="4.6.3" class="anchored" data-anchor-id="proj"><span class="header-section-number">4.6.3</span> PROJ</h3>
+<p><a href="https://proj4.org/">PROJ</a> is an open-source library for storing, representing and transforming CRS information. PROJ strings continue to be used, but the format <a href="https://proj.org/faq.html#what-is-the-best-format-for-describing-coordinate-reference-systems">is deprecated by the PROJ C maintainers</a> due to inaccuracies when converting to the WKT format. The data and Python libraries we will be working with in this workshop use different underlying representations of CRSs under the hood for reprojecting. CRS information can still be represented with EPSG, WKT, or PROJ strings without consequence, but <strong>it is best to only use PROJ strings as a format for viewing CRS information, not for reprojecting data</strong>.</p>
+<p>PROJ represents CRS information as a text string of key-value pairs, which makes it easy to read and interpret.</p>
+<p>A PROJ4 string includes the following information:</p>
+<ul>
+<li><strong>proj:</strong> the projection of the data</li>
+<li><strong>zone:</strong> the zone of the data (this is specific to the UTM projection)</li>
+<li><strong>datum:</strong> the datum used</li>
+<li><strong>units:</strong> the units for the coordinates of the data</li>
+<li><strong>ellps:</strong> the ellipsoid (how the earth’s roundness is calculated) for the data</li>
+</ul>
+<p>Note that the zone is unique to the <a href="https://www.usgs.gov/faqs/what-does-term-utm-mean-utm-better-or-more-accurate-latitudelongitude">UTM projection</a>. Not all CRSs will have a zone.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E03/Utm-zones-USA.svg" class="img-fluid figure-img" alt="UTM zones across the CONUS"></p>
+<p></p><figcaption class="figure-caption">The UTM zones across the continental United States (Chrismurf at English Wikipedia, via <a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system#/media/File:Utm-zones-USA.svg">Wikimedia Commons</a> (CC-BY))</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="format-interoperability" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="format-interoperability"><span class="header-section-number">4.7</span> Format interoperability</h2>
+<p>Many existing file formats were invented by GIS software developers, often in a closed-source environment. This led to the large number of formats on offer today, and considerable problems transferring data between software environments. The <a href="https://www.gdal.org/">Geospatial Data Abstraction Library</a> (GDAL) is an open-source answer to this issue. In addition to there being multiple file formats, there are also many different projected coordinate reference systems in use and we often need to reproject data to make it consistent with the CRS of some other data set. <a href="https://proj.org/">PROJ</a> is the answer to this problem.</p>
+<section id="gdal" class="level3" data-number="4.7.1">
+<h3 data-number="4.7.1" class="anchored" data-anchor-id="gdal"><span class="header-section-number">4.7.1</span> GDAL</h3>
+<p>GDAL is an indispensable part of computational geospatial work. What is it?</p>
+<ul>
+<li>a translator library for raster and vector geospatial data formats (a few hundred) written in C, C++ and Python,</li>
+<li>an open source package (MIT License) released by <a href="https://www.osgeo.org/">The Open Source Geospatial Foundation (OSGeo)</a>,</li>
+<li>in addition to being used as a callable library, it includes a set of command line tools,</li>
+<li>is used as a core resource in countless GIS and geospatial analysis tools (e.g., free and open-source packages such as <a href="https://www.qgis.org/en/site/">QGIS</a> and <a href="https://grass.osgeo.org/">GRASS</a>; even <a href="https://www.esri.com/en-us/home">ESRI</a> appears to use GDAL to <a href="https://www.esri.com/en-us/home">deal with custom raster formats</a>).</li>
+</ul>
+<p>GDAL is a set of software tools that translate between almost any geospatial format in common use today (and some not so common ones). GDAL also contains tools for editing and manipulating both raster and vector files, including reprojecting data to different CRSs. GDAL can be used as a standalone command-line tool, or built in to other GIS software. Several open-source GIS programs use GDAL for all file import/export operations.</p>
+<p>Another related library, OGR, is part of the GDAL source code and focuses on “simple features vector data”. This <a href="https://trac.osgeo.org/gdal/wiki/FAQGeneral">GDAL FAQ page</a> gives more detail on the GDAL/OGR relationship. When people say GDAL, it includes OGR. Speaking of saying, both “gee-doll” and “goo-dle” are used.</p>
+<p>GDAL/OGR also relies on the <a href="https://proj.org/">PROJ</a> library for <a href="https://en.wikipedia.org/wiki/Map_projection">projections</a> and transformations.</p>
+<p>Given the importance of GDAL and its use by so many geospatial software packages, it is somewhat surprising that for many years it was maintained by a single person. Check out this <a href="https://mapscaping.com/podcast/gdal-geospatial-data-abstraction-library/">Mapscaping podcast on GDAL</a> for a fascinating telling of the GDAL story.</p>
+<p>We usually don’t have to install GDAL as it will get installed when we install higher level packages such as GeoPandas.</p>
+</section>
+<section id="proj---transform-geospatial-coordinates-between-different-coordinate-reference-systems" class="level3" data-number="4.7.2">
+<h3 data-number="4.7.2" class="anchored" data-anchor-id="proj---transform-geospatial-coordinates-between-different-coordinate-reference-systems"><span class="header-section-number">4.7.2</span> <a href="https://proj.org/">PROJ</a> - transform geospatial coordinates between different coordinate reference systems</h3>
+<p>The PROJ library does the heavy lifting of translating between different CRS and projections. Much like GDAL, it is:</p>
+<ul>
+<li>open source,</li>
+<li>used both as a library and command line tool,</li>
+<li>foundational software to geospatial analysis,</li>
+<li>now maintained by OSGeo.</li>
+</ul>
+<p>While the underlying library is C/C++, you can use PROJ from Python via the <a href="https://pyproj4.github.io/pyproj/stable/api/proj.html">pyproj package</a>. Like GDAL, <strong>pyproj</strong> will get installed when we install a higher level package such as GeoPandas.</p>
+</section>
+</section>
+<section id="metadata" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="metadata"><span class="header-section-number">4.8</span> Metadata</h2>
+<p>Spatial data is useless without metadata. Essential metadata includes the CRS information, but proper spatial metadata encompasses more than that. History and provenance of a dataset (how it was made), who is in charge of maintaining it, and appropriate (and inappropriate!) use cases should also be documented in metadata. This information should accompany a spatial dataset wherever it goes. In practice this can be difficult, as many spatial data formats don’t have a built-in place to hold this kind of information. Metadata often has to be stored in a companion file, and generated and maintained manually.</p>
+</section>
+<section id="more-resources-on-crs" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="more-resources-on-crs"><span class="header-section-number">4.9</span> More Resources on CRS</h2>
+<ul>
+<li><a href="https://spatialreference.org/ref/epsg/">spatialreference.org</a> - A comprehensive online library of CRS information.</li>
+<li><a href="https://docs.qgis.org/3.22/en/docs/gentle_gis_introduction/coordinate_reference_systems.html">QGIS Documentation - CRS Overview.</a></li>
+<li><a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/">Choosing the Right Map Projection.</a></li>
+<li><a href="https://www.youtube.com/embed/KUF_Ckv8HbE">Video</a> highlighting how map projections can make continents seems proportionally larger or smaller than they actually are.</li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+CRS and projections
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are going to work with geospatial data, you are going to have to learn about coordinate reference systems (CRS) and map projections. The world isn’t flat and it’s not a perfect sphere. However, most maps are flat. Projections are a way of translating our non-flat earth to a flat representation for mapping. The CRS is a specific type of “grid system” so that numeric X-Y coordinates can be associated with any point on the map.</p>
+<ul>
+<li>All geospatial datasets (raster and vector) are associated with a specific coordinate reference system.</li>
+<li>A coordinate reference system includes datum, projection, and additional parameters specific to the dataset.</li>
+</ul>
+</div>
+</div>
+<p>A few interesting reference documents on CRS use by the USGS include:</p>
+<ul>
+<li><a href="https://pubs.usgs.gov/pp/1395/report.pdf">https://pubs.usgs.gov/pp/1395/report.pdf</a></li>
+<li><a href="https://www.usgs.gov/publications/map-projections-used-us-geological-survey">https://www.usgs.gov/publications/map-projections-used-us-geological-survey</a></li>
+</ul>
+</section>
+<section id="case-study-land-use-analysis-on-the-ou-campus" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="case-study-land-use-analysis-on-the-ou-campus"><span class="header-section-number">4.10</span> Case Study: Land use analysis on the OU campus</h2>
+<p>For this this module, you’ll be working through a Jupyter notebook that introduces the very basics of working with coordinate reference systems.</p>
+<section id="activities" class="level3" data-number="4.10.1">
+<h3 data-number="4.10.1" class="anchored" data-anchor-id="activities"><span class="header-section-number">4.10.1</span> Activities</h3>
+<p>Launch Jupyter lab and open the <strong>ou_land_use_03_crs.ipynb</strong> file. Work your way through out.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02_intro_vector_data.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04_gis_landscape.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -102,6 +102,10 @@ accessed independently. By providing this "pyramidal" structure, users that are 
 by a high-resolution raster can directly access the lower-resolution versions of the same image, significantly saving
 on the downloading time. More information on the COG format can be found [here](https://www.cogeo.org).
 
+### Learn more
+
+If you are interested in learning more about remote sensing, there is an introductory remote sensing [tutorial created by Canada Centre for Mapping and Earth Observation](https://natural-resources.canada.ca/maps-tools-and-publications/satellite-imagery-elevation-data-and-air-photos/tutorial-fundamentals-remote-sensing/9309).
+
 ### Activities
 
 Launch Jupyter lab and open the **ou_land_use_05_satellite.ipynb** file. Work your

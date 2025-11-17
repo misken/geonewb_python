@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A brief introduction to Python for geocomputation - 3&nbsp; Introduction to vector data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03_intro_crs.html" rel="next">
+<link href="./01_intro_raster_data.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A brief introduction to Python for geocomputation</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_intro_vector_data.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_intro_crs.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_gis_landscape.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_access_satellite_imagery.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_working_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">More on working with raster and vector data</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#readings-and-resources" id="toc-readings-and-resources" class="nav-link active" data-scroll-target="#readings-and-resources"><span class="toc-section-number">3.1</span>  Readings and resources</a></li>
+  <li><a href="#about-vector-data" id="toc-about-vector-data" class="nav-link" data-scroll-target="#about-vector-data"><span class="toc-section-number">3.2</span>  About vector data</a></li>
+  <li><a href="#important-attributes-of-vector-data" id="toc-important-attributes-of-vector-data" class="nav-link" data-scroll-target="#important-attributes-of-vector-data"><span class="toc-section-number">3.3</span>  Important attributes of vector data</a>
+  <ul class="collapse">
+  <li><a href="#extent" id="toc-extent" class="nav-link" data-scroll-target="#extent"><span class="toc-section-number">3.3.1</span>  Extent</a></li>
+  </ul></li>
+  <li><a href="#vector-data-format-for-this-module" id="toc-vector-data-format-for-this-module" class="nav-link" data-scroll-target="#vector-data-format-for-this-module"><span class="toc-section-number">3.4</span>  Vector data format for this module</a></li>
+  <li><a href="#integrated-raster-and-vector-data-formats" id="toc-integrated-raster-and-vector-data-formats" class="nav-link" data-scroll-target="#integrated-raster-and-vector-data-formats"><span class="toc-section-number">3.5</span>  Integrated raster and vector data formats</a></li>
+  <li><a href="#add-geospatial-functionality-to-pandas" id="toc-add-geospatial-functionality-to-pandas" class="nav-link" data-scroll-target="#add-geospatial-functionality-to-pandas"><span class="toc-section-number">3.6</span>  Add geospatial functionality to pandas</a></li>
+  <li><a href="#case-study-land-use-analysis-on-the-ou-campus" id="toc-case-study-land-use-analysis-on-the-ou-campus" class="nav-link" data-scroll-target="#case-study-land-use-analysis-on-the-ou-campus"><span class="toc-section-number">3.7</span>  Case Study: Land use analysis on the OU campus</a>
+  <ul class="collapse">
+  <li><a href="#activities" id="toc-activities" class="nav-link" data-scroll-target="#activities"><span class="toc-section-number">3.7.1</span>  Activities</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-introvector" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Now we’ll look at the second main type of data - vector data. You will be able to:</p>
+<ul>
+<li>Describe the strengths and weaknesses of storing data in vector format.</li>
+<li>Describe the different types of vectors and identify types of data that would be stored in each.</li>
+<li>Use GeoPandas to read and work with a vector data file in Shapefile format.</li>
+</ul>
+<section id="readings-and-resources" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="readings-and-resources"><span class="header-section-number">3.1</span> Readings and resources</h2>
+<ul>
+<li>GCwP - <a href="https://py.geocompx.org/01-spatial-data#sec-vector-data">Ch 1: Geographic Data in Python - Section 1.2</a></li>
+<li>GCwR - <a href="https://r.geocompx.org/spatial-class#vector-data">Ch 2: Geographic Data in R - Section 2.2</a></li>
+</ul>
+</section>
+<section id="about-vector-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="about-vector-data"><span class="header-section-number">3.2</span> About vector data</h2>
+<p>Vector data structures represent specific features on the Earth’s surface, and assign attributes to those features. Vectors are composed of discrete geometric locations (x, y values) known as vertices that define the shape of the spatial object. The organization of the vertices determines the type of vector that we are working with: point, line or polygon.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E02/pnt_line_poly.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">vector data types</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li><p><strong>Points:</strong> Each point is defined by a single x, y coordinate. There can be many points in a vector point file. Examples of point data include: sampling locations, the location of individual buildings, or the location of bathrooms.</p></li>
+<li><p><strong>Lines:</strong> Lines are composed of many (at least 2) points that are connected. For instance, a road or a stream may be represented by a line. This line is composed of a series of segments, each “bend” in the road or stream represents a vertex that has a defined x, y location.</p></li>
+<li><p><strong>Polygons:</strong> A polygon consists of 3 or more vertices that are connected and closed. The outlines of survey plot boundaries, lakes, oceans, and states or countries are often represented by polygons.</p></li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Data Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sometimes, boundary layers such as states and countries, are stored as lines rather than polygons. However, these boundaries, when represented as a line, will not create a closed object with a defined area that can be filled.</p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Challenge - Identify Vector Types
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The plot below includes examples of two of the three types of vector objects. Use the definitions above to identify which features are represented by which vector type.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E02/vector_types_examples.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">vector type examples</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>State boundaries are polygons. The Fisher Tower location is a point. There are no line features shown.</p>
+</div>
+</div>
+</div>
+<p>Vector data has some important advantages:</p>
+<ul>
+<li>The geometry itself contains information about what the dataset creator thought was important.</li>
+<li>The geometry structures hold information in themselves - why choose point over polygon, for instance?</li>
+<li>Each geometry feature can carry multiple attributes instead of just one, e.g.&nbsp;a database of cities can have attributes for name, country, population, etc.</li>
+<li>Data storage can be very efficient compared to rasters. For example, a polygon of a large area can be represented with a small number of vertices as compared to all the raster grid elements making up the polygon.</li>
+</ul>
+<p>The downsides of vector data include:</p>
+<ul>
+<li>Potential loss of detail compared to raster.</li>
+<li>Potential bias in datasets - what didn’t get recorded?</li>
+<li>Calculations involving multiple vector layers need to do math on the geometry as well as the attributes, so can be slow compared to raster math.</li>
+</ul>
+<p>Vector datasets are in use in many industries besides geospatial fields. For instance, computer graphics are largely vector-based, although the data structures in use tend to join points using arcs and complex curves rather than straight lines. Computer-aided design (CAD) is also vector-based. The difference is that geospatial datasets are accompanied by information tying their features to real-world locations.</p>
+</section>
+<section id="important-attributes-of-vector-data" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="important-attributes-of-vector-data"><span class="header-section-number">3.3</span> Important attributes of vector data</h2>
+<section id="extent" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="extent"><span class="header-section-number">3.3.1</span> Extent</h3>
+<p>The spatial extent is the geographic area that the geographic data covers. The spatial extent of an object represents the geographic edge or location that is the furthest north, south, east and west. In other words, extent represents the overall geographic coverage of the spatial object.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E01/spatial_extent.png" class="img-fluid figure-img" alt="spatial extent objects"></p>
+<p></p><figcaption class="figure-caption">Spatial extent image (Image Source: National Ecological Observatory Network (NEON))</figcaption><p></p>
+</figure>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Challenge - Extent
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the image above, the dashed boxes around each set of objects seems to imply that the three objects have the same extent. Is this accurate? If not, which object(s) have a different extent?</p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The lines and polygon objects have the same extent. The extent for the points object is smaller in the vertical direction than the other two because there are no points on the line at y = 8.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="vector-data-format-for-this-module" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="vector-data-format-for-this-module"><span class="header-section-number">3.4</span> Vector data format for this module</h2>
+<p>Like raster data, vector data can also come in many different formats. For this module, we will start with the Shapefile format. This is an extremely common (and old) format developed by <a href="https://www.esri.com/en-us/home">ESRI</a> the company behind the most popular commercial GIS package, ArcGIS.</p>
+<p>A Shapefile format consists of multiple files in the same directory, of which <code>.shp</code>, <code>.shx</code>, and <code>.dbf</code> files are mandatory. Other non-mandatory but very important files are <code>.prj</code> and <code>shp.xml</code> files.</p>
+<ul>
+<li>The <code>.shp</code> file stores the feature geometry itself</li>
+<li><code>.shx</code> is a positional index of the feature geometry to allow quickly searching forwards and backwards through the geographic coordinates of each vertex in the vector</li>
+<li><code>.dbf</code> contains the tabular attributes for each shape. Based on the really old (1983, pre-Windows), dBASE, file format.</li>
+<li><code>.prj</code> file indicates the coordinate reference system (CRS)</li>
+<li><code>.shp.xml</code> contains the Shapefile metadata.</li>
+</ul>
+<p>Together, the Shapefile includes the following information:</p>
+<ul>
+<li><strong>Extent</strong> - the spatial extent of the shapefile (i.e.&nbsp;geographic area that the shapefile covers). The spatial extent for a shapefile represents the combined extent for all spatial objects in the shapefile.</li>
+<li><strong>Object type</strong> - whether the shapefile includes points, lines, or polygons.</li>
+<li><strong>Coordinate reference system (CRS)</strong> - more on this later.</li>
+<li><strong>Other attributes</strong> - for example, a line shapefile that contains the locations of streams, might contain the name of each stream.</li>
+</ul>
+<p>Because the structure of points, lines, and polygons are different, each individual shapefile can only contain one vector type (all points, all lines or all polygons). You will not find a mixture of point, line and polygon objects in a single shapefile.</p>
+<p>Later in this module we’ll look at GeoJSON files, another format for storing vector data.</p>
+<div class="callout callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+More resources on shapefiles
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>More about shapefiles can be found on <a href="https://en.wikipedia.org/wiki/Shapefile">Wikipedia.</a> Shapefiles are often publicly available from government services, such as <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html">this page from the US Census Bureau</a>.</p>
+</div>
+</div>
+</section>
+<section id="integrated-raster-and-vector-data-formats" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="integrated-raster-and-vector-data-formats"><span class="header-section-number">3.5</span> Integrated raster and vector data formats</h2>
+<p>Very few formats can contain both raster and vector data - in fact, most are even more restrictive than that. Vector datasets are usually locked to one geometry type, e.g.&nbsp;points only. Raster datasets can usually only encode one data type, for example you can’t have a multiband GeoTIFF where one layer is integer data and another is floating-point. There are sound reasons for this - format standards are easier to define and maintain, and so is metadata. The effects of particular data manipulations are more predictable if you are confident that all of your input data has the same characteristics.</p>
+<p>There are integrated file formats that do allow you to mix separate vector and raster files within the same container file. These include <a href="https://www.geopackage.org/">GeoPackage</a> (which is a SQLite database) and <a href="https://pro.arcgis.com/en/pro-app/latest/help/data/geodatabases/overview/what-is-a-geodatabase-.htm">Geodatabase</a> formats.</p>
+<div class="callout callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<ul>
+<li>Vector data structures represent specific features on the Earth’s surface along with attributes of those features.</li>
+<li>Vector objects are either points, lines, or polygons.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>How might we store and use vector data in Python?</p>
+</section>
+<section id="add-geospatial-functionality-to-pandas" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="add-geospatial-functionality-to-pandas"><span class="header-section-number">3.6</span> Add geospatial functionality to pandas</h2>
+<p>The basic idea behind <a href="https://geopandas.org/en/stable/">GeoPandas</a> is to combine the capabilities of pandas with the <strong>shapely</strong> library to allow you to work with geospatial data in a <strong>pandas</strong>-like way.</p>
+<blockquote class="blockquote">
+<p>GeoPandas is an open source project to make working with geospatial data in python easier. GeoPandas extends the datatypes used by pandas to allow spatial operations on geometric types. Geometric operations are performed by <a href="https://shapely.readthedocs.io/en/stable/index.html">shapely</a>. GeoPandas further depends on <a href="https://fiona.readthedocs.io/en/stable/">fiona</a> for file access and matplotlib for plotting.</p>
+</blockquote>
+<p><img src="images/E07/pandas_geopandas_relation.png" class="img-fluid" alt="Pandas and Geopandas"></p>
+<p>GeoPandas extends the popular <strong>pandas</strong> library for data analysis to geospatial applications. The main <strong>pandas</strong> objects (the <code>Series</code> and the <code>DataFrame</code>) are expanded to <strong>geopandas</strong> objects (<code>GeoSeries</code> and <code>GeoDataFrame</code>). This extension is implemented by including geometric types, represented in Python using the <strong>shapely</strong> library, and by providing dedicated methods for spatial operations (union, intersection, etc.). The relationship between <code>Series</code>, <code>DataFrame</code>, <code>GeoSeries</code> and <code>GeoDataFrame</code> can be briefly explained as follow:</p>
+<ul>
+<li>A <code>Series</code> is a one-dimensional array with axis, holding any data type (integers, strings, floating-point numbers, Python objects, etc.)</li>
+<li>A <code>DataFrame</code> is a two-dimensional labeled data structure with columns of potentially different types1.</li>
+<li>A <code>GeoSeries</code> is a <code>Series</code> object designed to store shapely geometry objects.</li>
+<li>A <code>GeoDataFrame</code> is an extended <code>pandas.DataFrame</code>, which has a column with geometry objects, and this column is a <code>GeoSeries</code>.</li>
+</ul>
+<p>Let’s use <strong>geopandas</strong> to read a shapefile. The US government provides Cartographic Boundary Files in both geodatabase and shapefile formats. They are available at different levels of resolution and also by geographic region.</p>
+<blockquote class="blockquote">
+<p>The cartographic boundary files are simplified representations of selected geographic areas from the Census Bureau’s Master Address File/Topologically Integrated Geographic Encoding and Referencing (MAF/TIGER) System. These boundary files are specifically designed for small scale thematic mapping. As of 2019, cartographic boundary files are available in shapefile, geodatabase, and Keyhole Markup Language (KML) format. For more details about these files, including their appropriate usage, please see our <a href="https://www.census.gov/programs-surveys/geography/technical-documentation/naming-convention/cartographic-boundary-file.html">Cartographic Boundary File Description</a> page.</p>
+</blockquote>
+<p>From <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html">this link</a>, I downloaded a zipped shapefile (<strong>cb_2022_26_place_500k.zip</strong>) for the Places in the state of Michigan. As we’ll see, these are things like city and township boundaries. After uncompressing it, the resulting folder looks like this:</p>
+<pre><code>├── cb_2022_26_place_500k
+│&nbsp;&nbsp; ├── cb_2022_26_place_500k.cpg
+│&nbsp;&nbsp; ├── cb_2022_26_place_500k.dbf
+│&nbsp;&nbsp; ├── cb_2022_26_place_500k.prj
+│&nbsp;&nbsp; ├── cb_2022_26_place_500k.shp
+│&nbsp;&nbsp; ├── cb_2022_26_place_500k.shp.ea.iso.xml
+│&nbsp;&nbsp; ├── cb_2022_26_place_500k.shp.iso.xml
+│&nbsp;&nbsp; └── cb_2022_26_place_500k.shx
+└── cb_2022_26_place_500k.zip
+
+1 directory, 8 files</code></pre>
+<p>Now let’s open the shapefile with <strong>geopandas</strong>.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To read a shapefile, we can use the <code>read_file()</code> function and pass in the name of the file with the <code>.shp</code> extension.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mi_places_file <span class="op">=</span> Path(<span class="st">'data'</span>, <span class="st">'cb_2022_26_place_500k'</span>, <span class="st">'cb_2022_26_place_500k.shp'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mi_places_gdf <span class="op">=</span> gpd.read_file(mi_places_file)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>mi_places_gdf.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'geopandas.geodataframe.GeoDataFrame'&gt;
+RangeIndex: 745 entries, 0 to 744
+Data columns (total 13 columns):
+ #   Column      Non-Null Count  Dtype   
+---  ------      --------------  -----   
+ 0   STATEFP     745 non-null    object  
+ 1   PLACEFP     745 non-null    object  
+ 2   PLACENS     745 non-null    object  
+ 3   AFFGEOID    745 non-null    object  
+ 4   GEOID       745 non-null    object  
+ 5   NAME        745 non-null    object  
+ 6   NAMELSAD    745 non-null    object  
+ 7   STUSPS      745 non-null    object  
+ 8   STATE_NAME  745 non-null    object  
+ 9   LSAD        745 non-null    object  
+ 10  ALAND       745 non-null    int64   
+ 11  AWATER      745 non-null    int64   
+ 12  geometry    745 non-null    geometry
+dtypes: geometry(1), int64(2), object(10)
+memory usage: 75.8+ KB</code></pre>
+</div>
+</div>
+<p>The resulting data structure is called a <code>GeoDataFrame</code>. In addition to standard <code>DataFrame</code> fields, a <code>GeoDataFrame</code> has one or more <code>geometry</code> fields. Only one <code>geometry</code> field is considered active at any one time. As you might guess, this field will allow us to do spatial queries with pandas-like commands as well as plot the data.</p>
+<p>Let’s see what’s in the <code>geometry</code> field.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mi_places_gdf[[<span class="st">'NAME'</span>, <span class="st">'geometry'</span>]].head(<span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>NAME</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Wakefield</td>
+      <td>POLYGON ((-89.98990 46.47580, -89.98972 46.477...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Hesperia</td>
+      <td>POLYGON ((-86.04946 43.57584, -86.03964 43.575...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Britton</td>
+      <td>POLYGON ((-83.84044 41.98837, -83.83784 41.987...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Zilwaukee</td>
+      <td>POLYGON ((-83.93590 43.47955, -83.93557 43.494...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Zeeland</td>
+      <td>POLYGON ((-86.03850 42.80958, -86.03564 42.812...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Sunfield</td>
+      <td>POLYGON ((-85.00503 42.76676, -84.98533 42.766...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Suttons Bay</td>
+      <td>POLYGON ((-85.65931 44.98558, -85.65684 44.985...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Big Rapids</td>
+      <td>POLYGON ((-85.50392 43.68804, -85.50381 43.695...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Fife Lake</td>
+      <td>POLYGON ((-85.36328 44.57706, -85.36324 44.580...</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Bloomfield Hills</td>
+      <td>POLYGON ((-83.26587 42.59630, -83.25753 42.596...</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Tustin</td>
+      <td>POLYGON ((-85.46393 44.10665, -85.45380 44.106...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Melvin</td>
+      <td>POLYGON ((-82.87187 43.19339, -82.85227 43.193...</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Roosevelt Park</td>
+      <td>POLYGON ((-86.28329 43.20215, -86.28320 43.205...</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Hudson</td>
+      <td>POLYGON ((-84.36191 41.86440, -84.36097 41.863...</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>North Branch</td>
+      <td>POLYGON ((-83.21524 43.22503, -83.20216 43.225...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>As each row is a “place” in Michigan, it’s not surprising to find <code>POLYGON</code> objects in the <code>geometry</code> field. You’ll explore this <code>GeoDataFrame</code> further in the land use analysis notebook below.</p>
+</section>
+<section id="case-study-land-use-analysis-on-the-ou-campus" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="case-study-land-use-analysis-on-the-ou-campus"><span class="header-section-number">3.7</span> Case Study: Land use analysis on the OU campus</h2>
+<p>For this this module, you’ll be working through a Jupyter notebook that introduces the very basics of working with vector data in shapefile format.</p>
+<section id="activities" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="activities"><span class="header-section-number">3.7.1</span> Activities</h3>
+<p>Launch Jupyter lab and open the <strong>ou_land_use_02_vectorintro.ipynb</strong> file. Work your way through it.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01_intro_raster_data.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03_intro_crs.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

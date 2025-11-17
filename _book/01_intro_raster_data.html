@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A brief introduction to Python for geocomputation - 2&nbsp; Introduction to raster data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02_intro_vector_data.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A brief introduction to Python for geocomputation</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro_raster_data.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_intro_vector_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_intro_crs.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_gis_landscape.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_access_satellite_imagery.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_working_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">More on working with raster and vector data</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#readings-and-resources" id="toc-readings-and-resources" class="nav-link active" data-scroll-target="#readings-and-resources"><span class="toc-section-number">2.1</span>  Readings and resources</a></li>
+  <li><a href="#data-structures-raster-and-vector" id="toc-data-structures-raster-and-vector" class="nav-link" data-scroll-target="#data-structures-raster-and-vector"><span class="toc-section-number">2.2</span>  Data structures: raster and vector</a></li>
+  <li><a href="#about-raster-data" id="toc-about-raster-data" class="nav-link" data-scroll-target="#about-raster-data"><span class="toc-section-number">2.3</span>  About raster data</a></li>
+  <li><a href="#important-attributes-of-raster-data" id="toc-important-attributes-of-raster-data" class="nav-link" data-scroll-target="#important-attributes-of-raster-data"><span class="toc-section-number">2.4</span>  Important attributes of raster data</a>
+  <ul class="collapse">
+  <li><a href="#resolution" id="toc-resolution" class="nav-link" data-scroll-target="#resolution"><span class="toc-section-number">2.4.1</span>  Resolution</a></li>
+  </ul></li>
+  <li><a href="#raster-data-format-for-this-module" id="toc-raster-data-format-for-this-module" class="nav-link" data-scroll-target="#raster-data-format-for-this-module"><span class="toc-section-number">2.5</span>  Raster data format for this module</a></li>
+  <li><a href="#multi-band-raster-data" id="toc-multi-band-raster-data" class="nav-link" data-scroll-target="#multi-band-raster-data"><span class="toc-section-number">2.6</span>  Multi-band raster data</a></li>
+  <li><a href="#case-study-land-use-analysis-on-the-ou-campus" id="toc-case-study-land-use-analysis-on-the-ou-campus" class="nav-link" data-scroll-target="#case-study-land-use-analysis-on-the-ou-campus"><span class="toc-section-number">2.7</span>  Case Study: Land use analysis on the OU campus</a>
+  <ul class="collapse">
+  <li><a href="#xarray---labelled-multidimension-arrays" id="toc-xarray---labelled-multidimension-arrays" class="nav-link" data-scroll-target="#xarray---labelled-multidimension-arrays"><span class="toc-section-number">2.7.1</span>  xarray - labelled multidimension arrays</a></li>
+  <li><a href="#rioxarray---read-raster-data-into-xarray-objects" id="toc-rioxarray---read-raster-data-into-xarray-objects" class="nav-link" data-scroll-target="#rioxarray---read-raster-data-into-xarray-objects"><span class="toc-section-number">2.7.2</span>  rioxarray - read raster data into xarray objects</a></li>
+  <li><a href="#activities" id="toc-activities" class="nav-link" data-scroll-target="#activities"><span class="toc-section-number">2.7.3</span>  Activities</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>There are two primary data types that we will learn about for storing geospatial data - raster and vector data. We will start out learning about raster data. You will be able to:</p>
+<ul>
+<li>Describe the difference between raster and vector data.</li>
+<li>Describe the strengths and weaknesses of storing data in raster format.</li>
+<li>Distinguish between continuous and categorical raster data and identify types of datasets that would be stored in each format.</li>
+</ul>
+<section id="readings-and-resources" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="readings-and-resources"><span class="header-section-number">2.1</span> Readings and resources</h2>
+<ul>
+<li>GCwP - <a href="https://py.geocompx.org/01-spatial-data#sec-raster-data">Ch 1: Geographic Data in Python - Section 1.3</a></li>
+<li>GCwR - <a href="https://r.geocompx.org/spatial-class#raster-data">Ch 2: Geographic Data in R - Section 2.3</a></li>
+<li><a href="https://gis.stackexchange.com/">GIS Stack Exchange</a> is like StackOverflow for geospatial questions. Very helpful.</li>
+</ul>
+<p>Yes, I know this class is Python based, but I’m including the second reference for a few reasons. First of all, it has outstanding, well written, content. Secondly, R has many strengths for geospatial analysis and mapping and most of you have already learned both R and Python basics in my previous course. It’s good to be aware of the R ecosystem for geocomputation as then you can pick and choose your tools as you see fit. R and Python are becoming more interoperable as time goes on and mixing the two is becoming quite common.</p>
+</section>
+<section id="data-structures-raster-and-vector" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-structures-raster-and-vector"><span class="header-section-number">2.2</span> Data structures: raster and vector</h2>
+<p>The two primary types of geospatial data are raster and vector data. Raster data is stored as a grid of values which are rendered on a map as pixels. Each pixel value represents an area on the Earth’s surface. Vector data structures represent specific features on the Earth’s surface (e.g.&nbsp;boundaries, bodies of water, roads, buildings, dams, parks, …), and assign attributes to those features. Vector data structures will be discussed in more detail in <a href="02_intro_vector_data.html"><span>Chapter&nbsp;3</span></a>.</p>
+<p>This module will focus on how to work with both raster and vector data sets, therefore it is essential that we understand the basic structures of these types of data and the types of data that they can be used to represent. Many maps have a combination of vector and raster data. For example, when you use satellite view in Google Maps, you are seeing vector data such as roads and places layered on top of aerial imagery which is raster data.</p>
+</section>
+<section id="about-raster-data" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="about-raster-data"><span class="header-section-number">2.3</span> About raster data</h2>
+<p>Raster data is any pixelated (or gridded) data where each pixel is associated with a specific geographic location. The value of a pixel can be continuous (e.g.&nbsp;elevation) or categorical (e.g.&nbsp;land use). If this sounds familiar, it is because this data structure is very common: it’s how we represent any digital image. A geospatial raster is only different from a digital photo in that it is accompanied by spatial information that connects the data to a particular location. This includes the raster’s <em>extent</em> (the area represented by the raster), cell size, the number of rows and columns, and its coordinate reference system (or CRS).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E01/raster_concept.png" class="img-fluid figure-img" alt="raster concept"></p>
+<p></p><figcaption class="figure-caption">Raster Concept (Source: National Ecological Observatory Network (NEON))</figcaption><p></p>
+</figure>
+</div>
+<p>Some examples of continuous rasters include:</p>
+<ol type="1">
+<li>Precipitation maps,</li>
+<li>Maps of tree height derived from <a href="https://oceanservice.noaa.gov/facts/lidar.html">lidar</a> data,</li>
+<li>Elevation values for a region.</li>
+</ol>
+<p>A map of elevation for Harvard Forest derived from the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing">NEON AOP LiDAR sensor</a> is below. Elevation is represented as a continuous numeric variable in this map. The legend shows the continuous range of values in the data from around 300 to 420 meters.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E01/continuous-elevation-HARV-plot-01.png" class="img-fluid figure-img" alt="elevation Harvard forest"></p>
+<p></p><figcaption class="figure-caption">Continuous Elevation Map: HARV Field Site</figcaption><p></p>
+</figure>
+</div>
+<p>Some rasters contain categorical data where each pixel represents a discrete class such as a landcover type (e.g., “forest” or “grassland”) rather than a continuous value such as elevation or temperature. Some examples of classified maps include:</p>
+<ol type="1">
+<li>Landcover / land-use maps,</li>
+<li>Tree height maps classified as short, medium, and tall trees.</li>
+<li>Elevation maps classified as low, medium, and high elevation.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E01/USA_landcover_classification.png" class="img-fluid figure-img" alt="USA landcover classification"></p>
+<p></p><figcaption class="figure-caption">USA landcover classification</figcaption><p></p>
+</figure>
+</div>
+<p>The map above shows the contiguous United States with landcover as categorical data. Each color is a different landcover category. (Source: Homer, C.G., et al., 2015, Completion of the 2011 National Land Cover Database for the conterminous United States-Representing a decade of land cover change information. Photogrammetric Engineering and Remote Sensing, v. 81, no. 5, p. 345-354)</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Challenge - Advantages and Disadvantages
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Think about potential advantages and disadvantages of storing data in raster format and list them.</p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Raster data has some important advantages:</p>
+<ul>
+<li>representation of continuous surfaces</li>
+<li>potentially very high levels of detail</li>
+<li>data is ‘unweighted’ across its extent - the geometry doesn’t implicitly highlight features</li>
+<li>cell-by-cell calculations can be very fast and efficient</li>
+</ul>
+<p>The downsides of raster data are:</p>
+<ul>
+<li>very large file sizes as cell size gets smaller</li>
+<li>currently popular formats don’t embed metadata well (more on this later!)</li>
+<li>can be difficult to represent complex information</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="important-attributes-of-raster-data" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="important-attributes-of-raster-data"><span class="header-section-number">2.4</span> Important attributes of raster data</h2>
+<section id="resolution" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="resolution"><span class="header-section-number">2.4.1</span> Resolution</h3>
+<p>A resolution of a raster represents the area on the ground that each pixel of the raster covers. The image below illustrates the effect of changes in resolution.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E01/raster_resolution.png" class="img-fluid figure-img" alt="resolution image"></p>
+<p></p><figcaption class="figure-caption">Resolution image (Source: National Ecological Observatory Network (NEON))</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="raster-data-format-for-this-module" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="raster-data-format-for-this-module"><span class="header-section-number">2.5</span> Raster data format for this module</h2>
+<p>Raster data can come in many different formats. We will use the GeoTIFF format which has the extension <code>.tif</code>. A <code>.tif</code> file stores metadata or attributes about the file as embedded <code>tif tags</code> along with the actual raster data. For instance, your camera might store a tag that describes the make and model of the camera or the date the photo was taken when it saves a <code>.tif</code>. A GeoTIFF is a standard <code>.tif</code> image format with additional spatial (georeferencing) information embedded in the file as tags. These tags should include the following raster metadata:</p>
+<ol type="1">
+<li>Extent</li>
+<li>Resolution</li>
+<li>Coordinate Reference System (CRS) - we will introduce this concept in <a href="03_intro_crs.html"><span>Chapter&nbsp;4</span></a>.</li>
+<li>Values that represent missing data (<code>NoDataValue</code>)</li>
+</ol>
+<p>We will discuss these attributes in more detail in later sections.</p>
+<div class="callout callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+More Resources on the <code>.tif</code> format
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/GeoTIFF">GeoTIFF on Wikipedia</a></li>
+<li><a href="https://trac.osgeo.org/geotiff/">OSGEO TIFF documentation</a></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="multi-band-raster-data" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="multi-band-raster-data"><span class="header-section-number">2.6</span> Multi-band raster data</h2>
+<p>A raster can contain one or more <em>bands</em>. One type of multi-band raster dataset that is familiar to many of us is a color image. A basic color image consists of three bands: red, green, and blue. Each band represents light reflected from the red, green or blue portions of the <a href="https://imagine.gsfc.nasa.gov/science/toolbox/emspectrum1.html">electromagnetic spectrum</a>. The pixel brightness for each band, when composited creates the colors that we see in an image.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E01/RGBSTack_1.jpg" class="img-fluid figure-img" alt="multi-band raster"></p>
+<p></p><figcaption class="figure-caption">RGB multi-band raster image (Source: National Ecological Observatory Network (NEON).)</figcaption><p></p>
+</figure>
+</div>
+<p>We can plot each band of a multi-band image individually. Or, we can composite all three bands together to make a color image. In a multi-band dataset, the individual band rasters will always have the same extent, resolution, and CRS.</p>
+<p>Multi-band raster data might also contain:</p>
+<ol type="1">
+<li><strong>Time series:</strong> the same variable, over the same area, over time.</li>
+<li><strong>Multi or hyperspectral imagery:</strong> image rasters that have 4 or more (multi-spectral) or more than 10-15 (hyperspectral) bands. We won’t be working with this type of data in this module, but you can check out the NEON Data Skills <a href="https://www.neonscience.org/hsi-hdf5-r">Imaging Spectroscopy HDF5 in R</a> tutorial if you’re interested in working with hyperspectral data cubes.</li>
+</ol>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Raster data is pixelated data where each pixel is associated with a specific location.</li>
+<li>Raster data always has an extent and a resolution.</li>
+<li>The extent is the geographical area covered by a raster.</li>
+<li>The resolution is the area covered by each pixel of a raster.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="case-study-land-use-analysis-on-the-ou-campus" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="case-study-land-use-analysis-on-the-ou-campus"><span class="header-section-number">2.7</span> Case Study: Land use analysis on the OU campus</h2>
+<p>Throughout this module, we will use this case study to allow you to get some hands on practice with the topics covered. For this first module, you’ll be working through a Jupyter notebook that introduces the overall case study and gives you an introduction to working with relevant raster data representing land use on the OU campus. You’ll get your first look at two import Python packages for working with raster data - <strong>xarray</strong> and <strong>rioxarray</strong>.</p>
+<section id="xarray---labelled-multidimension-arrays" class="level3" data-number="2.7.1">
+<h3 data-number="2.7.1" class="anchored" data-anchor-id="xarray---labelled-multidimension-arrays"><span class="header-section-number">2.7.1</span> <a href="https://docs.xarray.dev/en/stable/">xarray</a> - labelled multidimension arrays</h3>
+<p>Xarray builds on top of NumPy N-d arrays and adds the ability to create and work with labels for the dimensions.</p>
+<blockquote class="blockquote">
+<p>Xarray makes working with labelled multi-dimensional arrays in Python simple, efficient, and fun!</p>
+</blockquote>
+<p>The two main data structures are <code>DataArray</code> (a N-d generalization of a <code>pandas.Series</code>) and <code>DataSet</code> (an N-d generalization of a <code>pandas.DataFrame</code>). The <a href="https://docs.xarray.dev/en/stable/getting-started-guide/why-xarray.html">Overview: Why xarray?</a> page has a nice level of detail on the case for xarray and its link to geospatial analysis.</p>
+</section>
+<section id="rioxarray---read-raster-data-into-xarray-objects" class="level3" data-number="2.7.2">
+<h3 data-number="2.7.2" class="anchored" data-anchor-id="rioxarray---read-raster-data-into-xarray-objects"><span class="header-section-number">2.7.2</span> <a href="https://corteva.github.io/rioxarray/html/readme.html">rioxarray</a> - read raster data into xarray objects</h3>
+<p>The rioxarray package extends the xarray package to facilitate reading raster data into xarray objects. The actual reading of the raster file is done using another Python package known as <a href="https://rasterio.readthedocs.io/en/latest/">rasterio</a>. Once you load rioxarray, your can use the <code>rio</code> accessor with xarray objects to access rioxarray methods for working with raster data. From the rasterio docs:</p>
+<blockquote class="blockquote">
+<p>Geographic information systems use GeoTIFF and other formats to organize and store gridded raster datasets such as satellite imagery and terrain models. Rasterio reads and writes these formats and provides a Python API based on Numpy N-dimensional arrays and GeoJSON.</p>
+</blockquote>
+</section>
+<section id="activities" class="level3" data-number="2.7.3">
+<h3 data-number="2.7.3" class="anchored" data-anchor-id="activities"><span class="header-section-number">2.7.3</span> Activities</h3>
+<p>I have created one compressed archive which contains the Jupyter notebook(s) as well as any data (or other) files needed.</p>
+<p>Start by downloading the following file and extract it in a location of your choice.</p>
+<p>Launch Jupyter lab and open the <strong>ou_land_use_01_rasterintro.ipynb</strong> file. Work your way through it.</p>
+<ul>
+<li>Download: <a href="https://drive.google.com/file/d/14PbeJiZn-rrIXcQq8QMinT6bnxjNx-h-/view?usp=sharing">ou_land_use_analysis.zip</a></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./02_intro_vector_data.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

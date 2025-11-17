@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A brief introduction to Python for geocomputation - 5&nbsp; The GIS landscape</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./05_access_satellite_imagery.html" rel="next">
+<link href="./03_intro_crs.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A brief introduction to Python for geocomputation</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_intro_vector_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_intro_crs.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_gis_landscape.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_access_satellite_imagery.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_working_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">More on working with raster and vector data</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#standalone-software-packages" id="toc-standalone-software-packages" class="nav-link active" data-scroll-target="#standalone-software-packages"><span class="toc-section-number">5.1</span>  Standalone software packages</a>
+  <ul class="collapse">
+  <li><a href="#open-source-software" id="toc-open-source-software" class="nav-link" data-scroll-target="#open-source-software"><span class="toc-section-number">5.1.1</span>  Open-source software</a></li>
+  <li><a href="#commercial-software" id="toc-commercial-software" class="nav-link" data-scroll-target="#commercial-software"><span class="toc-section-number">5.1.2</span>  Commercial software</a></li>
+  <li><a href="#online-cloud-computing" id="toc-online-cloud-computing" class="nav-link" data-scroll-target="#online-cloud-computing"><span class="toc-section-number">5.1.3</span>  Online + cloud computing</a></li>
+  </ul></li>
+  <li><a href="#gui-vs-cli" id="toc-gui-vs-cli" class="nav-link" data-scroll-target="#gui-vs-cli"><span class="toc-section-number">5.2</span>  GUI vs CLI</a></li>
+  <li><a href="#gis-in-programming-languages" id="toc-gis-in-programming-languages" class="nav-link" data-scroll-target="#gis-in-programming-languages"><span class="toc-section-number">5.3</span>  GIS in programming languages</a></li>
+  <li><a href="#gis-file-types" id="toc-gis-file-types" class="nav-link" data-scroll-target="#gis-file-types"><span class="toc-section-number">5.4</span>  GIS file types</a>
+  <ul class="collapse">
+  <li><a href="#vector" id="toc-vector" class="nav-link" data-scroll-target="#vector"><span class="toc-section-number">5.4.1</span>  Vector</a></li>
+  <li><a href="#raster" id="toc-raster" class="nav-link" data-scroll-target="#raster"><span class="toc-section-number">5.4.2</span>  Raster</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In this section you will get an overview of the GIS software landscape. After this, you should be able to:</p>
+<ul>
+<li>Describe the difference between various approaches to geospatial computing, and their relative strengths and weaknesses.</li>
+<li>Name some commonly used GIS applications.</li>
+<li>Name some commonly used Python packages that can access and process spatial data.</li>
+<li>Describe pros and cons for working with geospatial data using a command-line versus a graphical user interface.</li>
+</ul>
+<section id="standalone-software-packages" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="standalone-software-packages"><span class="header-section-number">5.1</span> Standalone software packages</h2>
+<p>Most traditional GIS work is carried out in standalone applications that aim to provide end-to-end geospatial solutions. These applications are available under a wide range of licenses and price points. Some of the most common are listed below.</p>
+<section id="open-source-software" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="open-source-software"><span class="header-section-number">5.1.1</span> Open-source software</h3>
+<p>The <a href="https://www.osgeo.org/">Open Source Geospatial Foundation (OSGEO)</a> supports several actively managed GIS platforms:</p>
+<ul>
+<li><a href="https://www.qgis.org/en/site/">QGIS</a> is a professional GIS application that is built on top of and proud to be itself Free and Open Source Software (FOSS). QGIS is written in Python, has a python console interface, and has several interfaces written in R including <a href="https://cran.r-project.org/package=RQGIS">RQGIS</a>.</li>
+<li><a href="https://grass.osgeo.org/">GRASS GIS</a>, commonly referred to as GRASS (Geographic Resources Analysis Support System), is a FOSS-GIS software suite used for geospatial data management and analysis, image processing, graphics and maps production, spatial modeling, and visualization. GRASS GIS is currently used in academic and commercial settings around the world, as well as by many governmental agencies and environmental consulting companies. It is a founding member of the Open Source Geospatial Foundation (OSGeo). GRASS GIS can be installed along with and made accessible within QGIS 3.</li>
+<li><a href="https://www.gdal.org/">GDAL</a> is a multiplatform set of tools for translating between geospatial data formats. It can also handle reprojection and a variety of geoprocessing tasks. GDAL is built in to many applications both FOSS and commercial, including GRASS and QGIS.</li>
+<li><a href="https://www.saga-gis.org/en/index.html">SAGA-GIS</a>, or System for Automated Geoscientific Analyses, is a FOSS-GIS application developed by a small team of researchers from the Dept. of Physical Geography, Göttingen, and the Dept. of Physical Geography, Hamburg. SAGA has been designed for an easy and effective implementation of spatial algorithms, offers a comprehensive, growing set of geoscientific methods, provides an easily approachable user interface with many visualisation options, and runs under Windows and Linux operating systems. Like GRASS GIS, it can also be installed and made accessible in QGIS3.</li>
+<li><a href="https://postgis.net/">PostGIS</a> is a geospatial extension to the PostGreSQL relational database.</li>
+</ul>
+</section>
+<section id="commercial-software" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="commercial-software"><span class="header-section-number">5.1.2</span> Commercial software</h3>
+<ul>
+<li><a href="https://www.esri.com/en-us/home">ESRI (Environmental Systems Research Institute)</a> is an international supplier of geographic information system (GIS) software, web GIS and geodatabase management applications. ESRI provides several licenced platforms for performing GIS, including <a href="https://www.arcgis.com/home/index.html">ArcGIS</a>, <a href="https://www.esri.com/software/arcgis/arcgisonline">ArcGIS Online</a>, and <a href="https://server.arcgis.com/en/portal/">Portal for ArcGIS</a> a standalone version of ArGIS Online which you host locally. ESRI welcomes development on their platforms through their <a href="https://developers.arcgis.com/">DevLabs</a>. ArcGIS software can be installed using <a href="https://github.com/Esri/arcgis-cookbook">Chef Cookbooks from Github</a>.</li>
+<li>Pitney Bowes produced <a href="https://www.pitneybowes.com/us/location-intelligence/geographic-information-systems/mapinfo-pro.html">MapInfo Professional</a>, which was one of the earliest desktop GIS programs on the market.</li>
+<li><a href="https://www.hexagongeospatial.com/products/products">Hexagon Geospatial Power Portfolio</a> includes many geospatial tools including ERDAS Imagine, powerful software for remote sensing.</li>
+<li><a href="https://www.manifold.net/">Manifold</a> is a desktop GIS that emphasizes speed through the use of parallel and GPU processing.</li>
+</ul>
+</section>
+<section id="online-cloud-computing" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="online-cloud-computing"><span class="header-section-number">5.1.3</span> Online + cloud computing</h3>
+<ul>
+<li><a href="https://pangeo.io/">PANGEO</a> is a community organization dedicated to open and reproducible data science with python. They focus on the Pangeo software ecosystem for working with big data in the geosciences.</li>
+<li>Google has created <a href="https://earthengine.google.com/">Google Earth Engine (GEE)</a> which combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth’s surface. <a href="https://developers.google.com/earth-engine/">Earth Engine API</a> runs in both Python and JavaScript.</li>
+<li>Microsoft has created the <a href="https://planetarycomputer.microsoft.com/">Planetary Computer</a> which is similar to GEE but focuses on open standards such as the STAC catalog for organizing and finding geospatial data. It is heavily Python focused and its compute takes place in a JupyterHub. Both GEE and the Planetary Computer are free for academic and personal use.</li>
+<li><a href="https://www.arcgis.com/features/features.html">ArcGIS Online</a> provides access to thousands of maps and base layers.</li>
+</ul>
+<p>You can find a <a href="https://mapscaping.com/microsofts-planetary-computer-vs-google-earth-engine-a-compare-and-contrast/">comparison of GEE and the Planetary Computer</a> at the Mapscaping blog.</p>
+<p>Private companies have released SDK platforms for large scale GIS analysis:</p>
+<ul>
+<li><a href="https://kepler.gl/#/">Kepler.gl</a> is Uber’s toolkit for handling large datasets (i.e.&nbsp;Uber’s data archive).</li>
+<li><a href="https://boundlessgeo.com/">Boundless Geospatial</a> is built upon OSGEO software for enterprise solutions.</li>
+</ul>
+<p>Publicly funded open-source platforms for large scale GIS analysis:</p>
+<ul>
+<li><a href="https://pangeo.io/">PANGEO</a> for the Earth Sciences. This community organization also supports python libraries like <strong>xarray</strong>, <strong>iris</strong>, <strong>dask</strong>, <strong>jupyter</strong>, and many other packages.</li>
+<li><a href="https://sepal.io/">Sepal.io</a> by <a href="https://www.openforis.org/">FAO Open Foris</a> utilizing EOS satellite imagery and cloud resources for global forest monitoring.</li>
+</ul>
+</section>
+</section>
+<section id="gui-vs-cli" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="gui-vs-cli"><span class="header-section-number">5.2</span> GUI vs CLI</h2>
+<p>The earliest computer systems operated without a graphical user interface (GUI), relying only on the command-line interface (CLI). Since mapping and spatial analysis are strongly visual tasks, GIS applications benefited greatly from the emergence of GUIs and quickly came to rely heavily on them. Most modern GIS applications have very complex GUIs, with all common tools and procedures accessed via buttons and menus.</p>
+<p>Benefits of using a GUI include:</p>
+<ul>
+<li>Tools are all laid out in front of you</li>
+<li>Complex commands are easy to build</li>
+<li>Don’t need to learn a coding language</li>
+<li>Cartography and visualisation is more intuitive and flexible</li>
+</ul>
+<p>Downsides of using a GUI include:</p>
+<ul>
+<li>Low reproducibility - you can’t record your actions and replay</li>
+<li>Most are not designed for batch-processing files</li>
+<li>Limited ability to customise functions or write your own</li>
+<li>Intimidating interface for new users - so many buttons!</li>
+</ul>
+<p>In scientific computing, the lack of reproducibility in point-and-click software has come to be viewed as a critical weakness. As such, scripted CLI-style workflows are again becoming popular, which leads us to another approach to doing GIS — via a programming language. This is the approach we will be using throughout this module.</p>
+</section>
+<section id="gis-in-programming-languages" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="gis-in-programming-languages"><span class="header-section-number">5.3</span> GIS in programming languages</h2>
+<p>A number of powerful geospatial processing libraries exist for general-purpose programming languages like Java and C++. However, the learning curve for these languages is steep and the effort required is excessive for users who only need a subset of their functionality.</p>
+<p>Higher-level scripting languages like Python and R are easier to learn and use. Both now have their own packages that wrap up those geospatial processing libraries and make them easy to access and use safely. A key example is the Java Topology Suite (JTS), which is implemented in C++ as GEOS. GEOS is accessible in Python via the <code>shapely</code> package (and <code>geopandas</code>, which makes use of <code>shapely</code>) and in R via <code>sf</code>. R and Python also have interface packages for GDAL, and for specific GIS apps.</p>
+<p>This last point is a huge advantage for GIS-by-programming; these interface packages give you the ability to access functions unique to particular programs, but have your entire workflow recorded in a central document - a document that can be re-run at will. Below are lists of some of the key spatial packages for Python.</p>
+<ul>
+<li><strong>geopandas</strong> and <strong>geocube</strong> for working with vector data</li>
+<li><strong>rasterio</strong> and <strong>rioxarray</strong> for working with raster data</li>
+</ul>
+<p>These packages along with the <code>matplotlib</code> package are all we need for spatial data visualisation. Python also has many fundamental scientific packages that are relevant in the geospatial domain. Below is a list of particularly fundamental packages. <code>numpy</code>, <code>scipy</code>, and <code>scikit-image</code> are all excellent options for working with rasters, as arrays.</p>
+<p>As a programming language, Python can be a CLI tool. However, using Python together with an <a href="https://www.codecademy.com/articles/what-is-an-ide">Integrated Development Environment</a> (IDE) application allows some GUI features to become part of your workflow. IDEs allow the best of both worlds. They provide a place to visually examine data and other software objects, interact with your file system, and draw plots and maps, but your activities are still command-driven: recordable and reproducible. There are several IDEs available for Python. <a href="https://jupyter.org/">JupyterLab</a> is well-developed and the most widely used option for data science in Python. <a href="https://code.visualstudio.com/docs/python/python-tutorial">VSCode</a> and <a href="https://www.spyder-ide.org/">Spyder</a> are other popular options for data science.</p>
+<p>Traditional GIS apps are also moving back towards providing a scripting environment for users, further blurring the CLI/GUI divide. ESRI have adopted Python into their software, and QGIS is both Python and R-friendly.</p>
+</section>
+<section id="gis-file-types" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="gis-file-types"><span class="header-section-number">5.4</span> GIS file types</h2>
+<p>There are a variety of file types that are used in GIS analysis. Depending on the program you choose to use some file types can be used while others are not readable. Below is a brief table describing some of the most common vector and raster file types.</p>
+<p>See <a href="https://en.wikipedia.org/wiki/GIS_file_format">https://en.wikipedia.org/wiki/GIS_file_format</a> for more about GIS file formats.</p>
+<section id="vector" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="vector"><span class="header-section-number">5.4.1</span> Vector</h3>
+<table class="table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 33%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File Type</th>
+<th>Extensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Esri Shapefile</td>
+<td>.SHP .DBF .SHX</td>
+<td>The most common geospatial file type. This has become the industry standard. The three required files are: SHP is the feature geometry. SHX is the shape index position. DBF is the attribute data.</td>
+</tr>
+<tr class="even">
+<td>Geographic JavaScript Object Notation (GeoJSON)</td>
+<td>.GEOJSON .JSON</td>
+<td>Used for web-based mapping and uses JavaScript Object Notation to store the coordinates as text.</td>
+</tr>
+<tr class="odd">
+<td>Google Keyhole Markup Language (KML)</td>
+<td>.KML .KMZ</td>
+<td>KML stands for Keyhole Markup Language. This GIS format is XML-based and is primarily used for Google Earth.</td>
+</tr>
+<tr class="even">
+<td>OpenStreetMap</td>
+<td>.OSM</td>
+<td>OSM files are the native file for OpenStreetMap which had become the largest crowdsourcing GIS data project in the world. These files are a collection of vector features from crowd-sourced contributions from the open community.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="raster" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="raster"><span class="header-section-number">5.4.2</span> Raster</h3>
+<table class="table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 33%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File Type</th>
+<th>Extensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ERDAS Imagine</td>
+<td>.IMG</td>
+<td>ERDAS Imagine IMG files is a proprietary file format developed by Hexagon Geospatial. IMG files are commonly used for raster data to store single and multiple bands of satellite data. Each raster layer as part of an IMG file contains information about its data values. For example, this includes projection, statistics, attributes, pyramids and whether or not it’s a continuous or discrete type of raster.</td>
+</tr>
+<tr class="even">
+<td>GeoTIFF</td>
+<td>.TIF .TIFF .OVR</td>
+<td>The GeoTIFF has become an industry image standard file for GIS and satellite remote sensing applications. GeoTIFFs may be accompanied by other files:TFW is the world file that is required to give your raster geolocation.XML optionally accompany GeoTIFFs and are your metadata.AUX auxiliary files store projections and other information.OVR pyramid files improves performance for raster display.</td>
+</tr>
+<tr class="odd">
+<td>Cloud Optimized GeoTIFF (COG)</td>
+<td>.TIF .TIFF</td>
+<td>Based on the GeoTIFF standard, COGs incorporate tiling and overviews to support HTTP range requests where users can query and load subsets of the image without having to transfer the entire file.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Many software packages exist for working with geospatial data.</li>
+<li>Command-line programs allow you to automate and reproduce your work.</li>
+<li>JupyterLab provides a user-friendly interface for working with Python.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./03_intro_crs.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./05_access_satellite_imagery.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

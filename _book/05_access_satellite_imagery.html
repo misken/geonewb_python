@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A brief introduction to Python for geocomputation - 6&nbsp; Access satellite imagery using Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./06_working_raster_data.html" rel="next">
+<link href="./04_gis_landscape.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A brief introduction to Python for geocomputation</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to raster data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_intro_vector_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to vector data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_intro_crs.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to coordinate reference systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_gis_landscape.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_access_satellite_imagery.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_working_raster_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">More on working with raster and vector data</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview-of-the-planetary-computer" id="toc-overview-of-the-planetary-computer" class="nav-link active" data-scroll-target="#overview-of-the-planetary-computer"><span class="toc-section-number">6.1</span>  Overview of the Planetary Computer</a></li>
+  <li><a href="#search-for-satellite-imagery" id="toc-search-for-satellite-imagery" class="nav-link" data-scroll-target="#search-for-satellite-imagery"><span class="toc-section-number">6.2</span>  Search for satellite imagery</a>
+  <ul class="collapse">
+  <li><a href="#the-spatiotemporal-asset-catalog-stac-specification" id="toc-the-spatiotemporal-asset-catalog-stac-specification" class="nav-link" data-scroll-target="#the-spatiotemporal-asset-catalog-stac-specification"><span class="toc-section-number">6.2.1</span>  The SpatioTemporal Asset Catalog (STAC) specification</a></li>
+  </ul></li>
+  <li><a href="#search-a-stac-catalog" id="toc-search-a-stac-catalog" class="nav-link" data-scroll-target="#search-a-stac-catalog"><span class="toc-section-number">6.3</span>  Search a STAC catalog</a></li>
+  <li><a href="#exercise-discover-a-stac-catalog" id="toc-exercise-discover-a-stac-catalog" class="nav-link" data-scroll-target="#exercise-discover-a-stac-catalog"><span class="toc-section-number">6.4</span>  Exercise: Discover a STAC catalog</a></li>
+  <li><a href="#cloud-optimized-geotiffs" id="toc-cloud-optimized-geotiffs" class="nav-link" data-scroll-target="#cloud-optimized-geotiffs"><span class="toc-section-number">6.5</span>  Cloud Optimized GeoTIFFs</a>
+  <ul class="collapse">
+  <li><a href="#activities" id="toc-activities" class="nav-link" data-scroll-target="#activities"><span class="toc-section-number">6.5.1</span>  Activities</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Access satellite imagery using Python</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>A number of satellites take snapshots of the Earth’s surface from space. The images recorded by these remote sensors represent a very precious data source for any activity that involves monitoring changes on Earth. Satellite imagery is typically provided in the form of geospatial raster data, with the measurements in each grid cell (“pixel”) being linked with accurate geographic coordinate information.</p>
+<p>In this episode we will explore how to access open satellite data using Python. In particular, we will consider <a href="https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a">the Sentinel-2 data collection that is hosted on the Microsoft Planetary Computer</a>. This dataset consists of multi-band optical images acquired by the two satellites of <a href="https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2">the Sentinel-2 mission</a> and it is continuously updated with new images. After reading about the Sentinel-2 mission, you might have a number of questions:</p>
+<ul>
+<li>How do we do basic things like find images (geoTIFF) files and save the image itself to disk?</li>
+<li>What are these STAC repositories?</li>
+<li>What exactly is in this imaging data? There are numerous bands with different types of data and at different resolution levels (size in meters of each cell width).</li>
+<li>How do we read this imaging data into data structures amenable to further analysis?</li>
+<li>What kinds of analysis can we do with this data?</li>
+<li>What existing resources are available for newbies to Sentinel image data analysis?</li>
+</ul>
+<p>In this section we learn to do the following:</p>
+<ul>
+<li>Search public STAC repositories of satellite imagery using Python.</li>
+<li>Inspect search result’s metadata.</li>
+<li>Download (a subset of) the assets available for a satellite scene.</li>
+<li>Open satellite imagery as raster data and save it to disk.</li>
+</ul>
+<section id="overview-of-the-planetary-computer" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="overview-of-the-planetary-computer"><span class="header-section-number">6.1</span> Overview of the Planetary Computer</h2>
+<p>Microsoft’s, pretty new, <a href="https://planetarycomputer.microsoft.com/docs/overview/about">Planetary Computer</a> is quite an ambitious project. It has several major components:</p>
+<ul>
+<li><a href="https://planetarycomputer.microsoft.com/catalog">Data Catalog</a> - It is a ginormous repository of well cataloged data all about Earth’s various systems and includes a web based interface that allows users to find relevant data - for free. The repository is based on an open standard known as STAC.</li>
+<li><a href="https://planetarycomputer.microsoft.com/docs/quickstarts/reading-stac/">API</a> - It has an API that leverages open source tools to make it easy to do data searches by time and location. Focuses on Python.</li>
+<li><a href="https://planetarycomputer.microsoft.com/docs/overview/environment/">Hub</a> - A managed compute environment for doing cloud based geospatial analysis at scale. For this part you need to apply for access.</li>
+<li><a href="https://planetarycomputer.microsoft.com/applications">Applications</a> - An ecosystem of people doing meaningful work with the Planetary Computer.</li>
+</ul>
+<p>There is a Mapscaping podcast featuring two of the main developers of the Planetary Computer - see <a href="https://mapscaping.com/podcast/the-planetary-computer/">https://mapscaping.com/podcast/the-planetary-computer/</a>. The <a href="https://mapscaping.com/">Mapscaping.com</a> site is a great place to learn about geospatial analysis through its terrific podcasts. For example:</p>
+<ul>
+<li>The Planetary Computer - <a href="https://mapscaping.com/podcast/the-planetary-computer/">https://mapscaping.com/podcast/the-planetary-computer/</a></li>
+<li>Introducing Google Earth Engine - <a href="https://mapscaping.com/podcast/introducing-google-earth-engine/">https://mapscaping.com/podcast/introducing-google-earth-engine/</a></li>
+<li>Sentinel Hub - <a href="https://mapscaping.com/podcast/sentinel-hub/">https://mapscaping.com/podcast/sentinel-hub/</a></li>
+</ul>
+<p>We’ll mostly be using the Planetary Computer to search for and acquire satellite image data from the Sentinel-2 and Landsat catalogs. We can use the <a href="https://pystac.readthedocs.io/en/stable/">PySTAC</a> package to do this freely and without any authentication. As mentioned above, authentication is required to use the Hub computing cluster.</p>
+</section>
+<section id="search-for-satellite-imagery" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="search-for-satellite-imagery"><span class="header-section-number">6.2</span> Search for satellite imagery</h2>
+<section id="the-spatiotemporal-asset-catalog-stac-specification" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="the-spatiotemporal-asset-catalog-stac-specification"><span class="header-section-number">6.2.1</span> The SpatioTemporal Asset Catalog (STAC) specification</h3>
+<p>Current sensor resolutions and satellite revisit periods are such that terabytes of data products are added daily to the corresponding collections. Such datasets cannot be made accessible to users via full-catalog download. Space agencies and other data providers often offer access to their data catalogs through interactive portals such as the <a href="https://scihub.copernicus.eu/dhus/#/home">Copernicus Open Access Hub portal</a> for the Sentinel missions. Accessing data via a GUI is a nice way to explore a catalog and get familiar with its content, but it represents a heavy and error-prone task that should be avoided if carried out systematically to retrieve data.</p>
+<p>A service that offers programmatic access to the data enables users to access the desired data in a more reliable, scalable and reproducible manner. An important element in the software interface exposed to the users, which is generally called the Application Programming Interface (API), is the use of standards. Standards, in fact, can significantly facilitate the reusability of tools and scripts across datasets and applications.</p>
+<p>The <a href="https://stacspec.org/en">SpatioTemporal Asset Catalog (STAC) specification</a> is an emerging standard for describing geospatial data. By organizing metadata in a form that adheres to the STAC specifications, data providers make it possible for users to access data from different missions, instruments and collections using the same set of tools.</p>
+</section>
+</section>
+<section id="search-a-stac-catalog" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="search-a-stac-catalog"><span class="header-section-number">6.3</span> Search a STAC catalog</h2>
+<p>There are general STAC browsers such as the one at <a href="https://radiantearth.github.io/stac-browser/#/">Radiant Earth</a>. It is good starting point to discover available datasets, as it provides an up-to-date list of existing STAC catalogs. However, we are going to use the STAC browsing tools available through the Planetary Computer.</p>
+</section>
+<section id="exercise-discover-a-stac-catalog" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="exercise-discover-a-stac-catalog"><span class="header-section-number">6.4</span> Exercise: Discover a STAC catalog</h2>
+<p>Let’s take a moment to explore the Planetary Computer STAC catalog, which contains a large number of datasets spanning numerous areas such as air quality, climate, biodiversity, imagery, fires, weather, land use and more. Start by going to the main <a href="https://planetarycomputer.microsoft.com/catalog">Data Catalog</a> page. Spend some time browsing the various categories to see the breadth of data that is available. Then go to the <a href="https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a">Sentinel-2 Level-2A</a> page. Click the big blue button on the right labelled View in Explorer. You can navigate around somewhat like you do with Google Earth or Maps. Find the OU campus. As you scroll around on the map, the list of image tiles will continually update along the left side of the screen. Notice that the default is the most recent images with low cloud cover at the top.</p>
+<p>Pick one of the images from the list on the left. If you click, the Show on Map icon in the lower right corner of the image preview, you’ll see the satellite image superimposed on the map. If you click the squiggly bracket icon just to the left of the Show on Map icon, you’ll get a window with a Python code snippet for accessing the <em>assets</em> of this map. We’ll learn more about this shortly.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/E05/ou_image_on_map.png" class="img-fluid figure-img" alt="STAC browser screenshots"></p>
+<p></p><figcaption class="figure-caption">Views of the STAC browser</figcaption><p></p>
+</figure>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Challenge - Extent
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Scroll down through the image properties on the left. What CRS is this image using?</p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The EPSG code is 32627. This is associated with the CRS WGS 84 / UTM zone 17N. See <a href="https://epsg.io/?q=32617">https://epsg.io/?q=32617</a>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="cloud-optimized-geotiffs" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="cloud-optimized-geotiffs"><span class="header-section-number">6.5</span> Cloud Optimized GeoTIFFs</h2>
+<p>Cloud Optimized GeoTIFFs (COGs) are regular GeoTIFF files with some additional features that make them ideal to be employed in the context of cloud computing and other web-based services. This format builds on the widely-employed GeoTIFF format, already introduced in <a href="01-intro-raster-data.md">Episode 1: Introduction to Raster Data</a>. In essence, COGs are regular GeoTIFF files with a special internal structure. One of the features of COGs is that data is organized in “blocks” that can be accessed remotely via independent HTTP requests. Data users can thus access the only blocks of a GeoTIFF that are relevant for their analysis, without having to download the full file. In addition, COGs typically include multiple lower-resolution versions of the original image, called “overviews”, which can also be accessed independently. By providing this “pyramidal” structure, users that are not interested in the details provided by a high-resolution raster can directly access the lower-resolution versions of the same image, significantly saving on the downloading time. More information on the COG format can be found <a href="https://www.cogeo.org">here</a>.</p>
+<section id="activities" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="activities"><span class="header-section-number">6.5.1</span> Activities</h3>
+<p>Launch Jupyter lab and open the <strong>ou_land_use_05_satellite.ipynb</strong> file. Work your way through it.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04_gis_landscape.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The GIS landscape</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./06_working_raster_data.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">More on working with raster and vector data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
